@@ -7,7 +7,7 @@ import "boxicons";
 function App() {
     return (
         <div className="font-poppins">
-            {/* <Navbar /> */}
+            <Navbar />
             <section className="md:h-full flex items-center text-slate-600">
                 <div className="container px-5 py-24 mx-auto">
                     <div className="text-center mb-12">

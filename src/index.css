@@ -5,6 +5,11 @@
 
 @layer base {
     body {
-        @apply h-screen bg-gray-100;
+        @apply h-screen bg-gray-100 font-gtWalsheim;
     }
+}
+
+@font-face {
+    font-family: "regular";
+    src: url("./fonts/GT-Walsheim-Regular-Trial.otf") format("opentype");
 }

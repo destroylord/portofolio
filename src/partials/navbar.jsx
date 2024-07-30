@@ -1,35 +1,24 @@
 function Navbar() {
     return (
         <div>
-            <div className="">
-                <nav className="bg-slate-400 py-2">
-                    <div className="flex container mx-auto">
-                        <img src="logo192.png" alt="" className="p-4 w-20" />
-                    </div>
-                </nav>
-            </div>
-
-            <div className="py-4 fixed bottom-0 right-0 left-0 items-center bg-red-400 md:hidden">
-                <ul className="flex justify-around">
-                    {[
-                        ["Beranda", "#Beranda", "home-alt-2"],
-                        ["Tentang", "#Tentang", "info-circle"],
-                        ["Kontak", "#Kontak", "contact"],
-                    ].map(([title, href, icon]) => (
-                        <li className="hover:bg-red-700">
-                            <a
-                                href={href}
-                                className="flex justify-center flex-col items-center gap-1">
-                                <box-icon
-                                    type="solid"
-                                    name={icon}
-                                    className="text-2xl"></box-icon>
-                                <span>{title}</span>
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <nav className="bg-transparent border-b-2 px-2 sm:px-4 py-2.5 rounded">
+                <div className="container flex flex-wrap md:justify-end gap-4 sm:justify-center items-center mx-auto">
+                    <a href="https://github.com/destroylord"
+                        target="_blank">
+                        <box-icon
+                            type="logo"
+                            size="md"
+                            color="#C1C1C1"
+                            name="github"></box-icon>
+                    </a>
+                    <a
+                        href="javascript:void(0)"
+                        typeof="download"
+                        className="bg-indigo-700 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-offset-4 text-white rounded-lg border-indigo-700 p-3 text-center">
+                        Download CV
+                    </a>
+                </div>
+            </nav>
         </div>
     );
 }

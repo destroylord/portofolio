@@ -10,8 +10,7 @@ module.exports = {
         },
         extend: {},
         fontFamily: {
-            poppins: ["Poppins", "sans-serif"],
-            // body: ["Oxygen", "sans-serif"],
+            gtWalsheim: ["regular"],
         },
     },
 
