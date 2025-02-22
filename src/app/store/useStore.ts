@@ -1,5 +1,6 @@
 // src/store/useStore.ts
 import { create, StateCreator } from "zustand";
+
 type SetState<T> = Parameters<StateCreator<T>>[0];
 
 interface DataItem {
