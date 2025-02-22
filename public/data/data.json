@@ -1,0 +1,106 @@
+[
+    {
+        "id": 1,
+        "image": "/img-portfolio/dashpay.png",
+        "date": "October 29, 2021",
+        "title": "Dashpay",
+        "category": "Website",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam modi, expedita quos doloremque autem ipsum itaque incidunt ipsam reprehenderit fuga! Dolores quisquam eius cum accusamus?",
+        "techstack": ["Laravel", "Bootstrap"],
+        "links": {
+            "github": "https://github.com/destroylord/dashpay",
+            "demo": ""
+        }
+    },
+    {
+        "id": 2,
+        "image": "/img-portfolio/koperasi.png",
+        "date": "November 1, 2021",
+        "title": "Koperasi Simpan Pinjam",
+        "category": "Website",
+        "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+        "techstack": ["Laravel", "Bootstrap"],
+        "links": {
+            "github": "https://github.com/destroylord/cooperative",
+            "demo": ""
+        }
+    },
+    {
+        "id": 3,
+        "image": "/img-portfolio/pepet.png",
+        "date": "December 5, 2021",
+        "title": "Pepet",
+        "category": "Website",
+        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "techstack": ["Laravel", "Bootstrap"],
+        "links": {
+            "github": "https://github.com/dafrin/dashpay",
+            "demo": "https://dashpay.dafrin.com"
+        }
+    },
+    {
+        "id": 4,
+        "image": "/img-portfolio/pip-saw.png",
+        "date": "December 5, 2021",
+        "title": "SAW",
+        "category": "Website",
+        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "techstack": ["Laravel", "Bootstrap"],
+        "links": {
+            "github": "https://github.com/destroylord/skotga-web",
+            "demo": ""
+        }
+    },
+    {
+        "id": 5,
+        "image": "/img-portfolio/polijepay.png",
+        "date": "December 5, 2021",
+        "title": "Polijepay",
+        "category": "Website",
+        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "techstack": ["Laravel", "Bootstrap"],
+        "links": {
+            "github": "https://github.com/destroylord/polijepay",
+            "demo": ""
+        }
+    },
+    {
+        "id": 6,
+        "image": "/img-portfolio/simogang.png",
+        "date": "December 5, 2021",
+        "title": "SIMOGANG",
+        "category": "Website",
+        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "techstack": ["Laravel", "Bootstrap"],
+        "links": {
+            "github": "https://github.com/destroylord/monitoring-magang",
+            "demo": ""
+        }
+    },
+    {
+        "id": 7,
+        "image": "/img-portfolio/votype.png",
+        "date": "December 5, 2021",
+        "title": "Votype",
+        "category": "Website",
+        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "techstack": ["Laravel", "Bootstrap"],
+        "links": {
+            "github": "",
+            "demo": ""
+        }
+    },
+    {
+        "id": 8,
+        "image": "/img-portfolio/klasifikasi-sel-darah-merah.png",
+        "date": "December 5, 2021",
+        "title": "Klasifikasi Sel Darah Merah",
+        "category": "Website",
+        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "techstack": ["Flask", "Bootstrap", "Python"],
+        "links": {
+            "github": "",
+            "demo": ""
+        }
+    }
+]
