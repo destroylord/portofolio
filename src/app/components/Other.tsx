@@ -48,10 +48,10 @@ export default function Other() {
                                     </p>
                                     <small>
                                         Finalist in KMIPN 2021, developed a
-                                        mobile application "Sumbangin Aja" for
-                                        food sharing, competing against 1500
-                                        applicants from polytechnics across
-                                        Indonesia.
+                                        mobile application &quot;Sumbangin
+                                        Aja&quot; for food sharing, competing
+                                        against 1500 applicants from
+                                        polytechnics across Indonesia.
                                     </small>
                                 </div>
                             </div>
