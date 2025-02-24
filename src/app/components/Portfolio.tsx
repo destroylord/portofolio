@@ -3,14 +3,26 @@
 import { Icon } from "@iconify/react";
 import useStore from "../store/useStore";
 import Image from "next/image";
+import ShinyText from "../utlis/ShinyText";
 
 export default function Portfolio() {
     const data = useStore((state) => state.data);
     return (
         <section className="w-full gap-8 sm:gap-12 max-screen py-16">
             <div className="flex justify-between">
-                <div>
-                    <h4>My Porfolio</h4>
+                <div className="items-center space-y-2">
+                    <h2 className="flex items-center gap-1 text-4xl">
+                        <Icon
+                            icon={"mdi:ninja-star"}
+                            className="animate-bounce"
+                        />
+                        <ShinyText
+                            text="My Portfolio"
+                            disabled={false}
+                            speed={3}
+                            className=""
+                        />
+                    </h2>
                     <h2>Creating next level digital products</h2>
                 </div>
                 <div>
@@ -22,11 +34,11 @@ export default function Portfolio() {
                 </div>
             </div>
             <div className="flex flex-row mt-5">
-                <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="columns-2 gap-4 sm:gap-8 lg:gap-12 w-[1200px] mx-auto space-y-3 pb-28">
                     {data.map((item) => (
                         <div
                             key={item.id}
-                            className="card bg-base-100 shadow-sm
+                            className="card  bg-base-100 shadow-sm
                             hover:shadow-2xl
                             transition-shadow duration-300">
                             <figure className="flex items-center justify-center">
@@ -50,7 +62,15 @@ export default function Portfolio() {
                                         ? `${item.description.slice(0, 100)}...`
                                         : item.description}
                                     {item.description?.length > 100 && (
-                                        <button className="text-primary hover:underline ml-1">
+                                        <button
+                                            onClick={() => {
+                                                const modal =
+                                                    document.getElementById(
+                                                        "my_modal_3"
+                                                    ) as HTMLDialogElement | null;
+                                                modal?.showModal();
+                                            }}
+                                            className="text-primary hover:underline ml-1">
                                             Baca Selengkapnya
                                         </button>
                                     )}

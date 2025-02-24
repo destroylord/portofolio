@@ -7,6 +7,19 @@ export default {
         "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
+    theme: {
+        extend: {
+            keyframes: {
+                shine: {
+                    "0%": { backgroundPosition: "100%" },
+                    "100%": { "background-position": "-100%" },
+                },
+            },
+            animation: {
+                shine: "shine 5s linear infinite",
+            },
+        },
+    },
 
     daisyui: {
         styled: true,

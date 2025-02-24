@@ -1,10 +1,17 @@
+import { Icon } from "@iconify/react";
+import ShinyText from "../utlis/ShinyText";
+
 export default function Experiences() {
     return (
         <>
             <section className=" w-full gap-8 sm:gap-12">
-                <div className="text-center py-8">
-                    <span>
-                        <p className="Work History text-2xl py-10">💪 Work History</p>
+                <div className="text-center py-8 ">
+                    <span className="flex justify-center items-center gap-1 text-4xl">
+                        <Icon icon="mdi:briefcase" className="" />
+                        <ShinyText
+                            speed={3}
+                            text=" Work History"
+                            className="text-4xl py-6 flex items-center"></ShinyText>
                     </span>
                     <span>Experience </span>
                     <span>
@@ -39,7 +46,7 @@ export default function Experiences() {
                                     Backend Developer (Internship)
                                 </p>
                                 <div>
-                                    <ul className="list-disc list-inside text-sm">
+                                    <ul className="list-disc list-inside space-y-4 text-sm">
                                         <li>
                                             Led 5 projects as the Person In
                                             Charge (PIC), ensuring on-time
@@ -89,7 +96,9 @@ export default function Experiences() {
                                 <h4 className="text-xl">
                                     CV. SyammerTech, Gresik
                                 </h4>
-                                <p className="text-md italic py-2">Web Developer</p>
+                                <p className="text-md italic py-2">
+                                    Web Developer
+                                </p>
                                 <div>
                                     <ul className="list-disc list-inside text-sm">
                                         <li>
