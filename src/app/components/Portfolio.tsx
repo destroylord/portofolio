@@ -34,7 +34,7 @@ export default function Portfolio() {
                 </div>
             </div>
             <div className="flex flex-row mt-5">
-                <div className="columns-2 gap-4 sm:gap-8 lg:gap-12 w-[1200px] mx-auto space-y-3 pb-28">
+                <div className="columns-2 gap-4 sm:gap-8 lg:gap-12 w-[1200px] mx-auto space-y-3 pb-18">
                     {data.map((item) => (
                         <div
                             key={item.id}
