@@ -26,16 +26,15 @@ export default function Hero() {
         <>
             <section className="max-w-screen-lg flex flex-col items-center gap-8 overflow-x-hidden pt-10 sm:flex-row md:gap-16 md:py-lg md:pt-sm">
                 <div className="relative w-full sm:w-1/2 ">
-                    {/* <div className="h-full w-full overflow-hidden rounded-b-full">
+                    <div className="h-full w-full overflow-hidden rounded-b-full">
                         <Image
                             alt="Hero Image"
                             width={600}
                             height={600}
                             className="aspect-[3/4] h-full w-full object-contain transition duration-300 hover:scale-[1.5]"
-                            // src="/images/profile.webp"
-                            src=""
+                            src="/images/profile.webp"
                             priority
-                        /> */}
+                        />
 
                         <div className="absolute bottom-0 left-[5%] grid aspect-square h-fit w-[40%] place-content-center bg-bg-800 shadow overflow-hidden">
                             <div className="">

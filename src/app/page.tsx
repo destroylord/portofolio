@@ -2,13 +2,13 @@
 
 import { useEffect } from "react";
 import useStore from "@/app/store/useStore";
-import Header from "./components/header";
-import Footer from "./components/Footer";
-import Experiences from "./components/Experiences";
-import Portfolio from "./components/Portfolio";
-import Hero from "./components/Hero";
-import Other from "./components/Other";
-import InfiniteLogo from "./components/InfiniteLogo";
+// import Header from "./components/header";
+// import Footer from "./components/Footer";
+// import Experiences from "./components/Experiences";
+// import Portfolio from "./components/Portfolio";
+// import Hero from "./components/Hero";
+// import Other from "./components/Other";
+// import InfiniteLogo from "./components/InfiniteLogo";
 import { motion, useScroll } from "framer-motion";
 
 export default function Home() {
@@ -42,14 +42,15 @@ export default function Home() {
             />
             <div className="flex flex-col items-center justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
                 <main className="flex-grow max-w-screen-lg px-4 py-8 mx-auto">
-                    <Header />
+                    <h4>Maintenance</h4>
+                    {/* <Header />
                     <Hero />
                     <InfiniteLogo />
                     <Experiences />
                     <Portfolio />
-                    <Other />
+                    <Other /> */}
                 </main>
-                <Footer />
+                {/* <Footer /> */}
             </div>
         </>
     );
