@@ -118,20 +118,20 @@ export default function Hero() {
                             </Link>
                             <Icon icon="mdi:external-link" />
                         </button>
-                        <Link
+                        {/* <Link
                             href="https://www.linkedin.com/in/fahmi-dafrin-maulana/"
                             className="btn"
                             target="_blank">
                             Linkedin
                             <Icon icon="mdi:external-link" />
-                        </Link>
-                        <Link
+                        </Link> */}
+                        {/* <Link
                             href="https://www.instagram.com/fdm_0301/"
                             className="btn"
                             target="_blank">
                             Instagram
                             <Icon icon="mdi:external-link" />
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             </section>
