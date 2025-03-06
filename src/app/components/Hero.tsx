@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
+// import Link from "next/link";
 import CircularText from "../utlis/CirculatText";
 import Typed from "typed.js";
 import { useEffect } from "react";
