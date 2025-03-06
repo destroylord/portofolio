@@ -109,7 +109,7 @@ export default function Hero() {
                         </div>
                     </div>
                     <div className="flex gap-2 rounded-full">
-                        <button className="btn">
+                        {/* <button className="btn">
                             <Link
                                 href="https://github.com/destroylord"
                                 target="_blank"
@@ -117,7 +117,7 @@ export default function Hero() {
                                 Github
                             </Link>
                             <Icon icon="mdi:external-link" />
-                        </button>
+                        </button> */}
                         {/* <Link
                             href="https://www.linkedin.com/in/fahmi-dafrin-maulana/"
                             className="btn"
