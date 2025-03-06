@@ -26,8 +26,8 @@ export default function Home() {
         fetchData();
     }, [setData]);
 
-    const hoverIntensity = 0.5; // Define hoverIntensity
-    const enableHover = true; // Define enableHover
+    // const hoverIntensity = 0.5; // Define hoverIntensity
+    // const enableHover = true; // Define enableHover
 
     return (
         <>
