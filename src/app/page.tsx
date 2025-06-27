@@ -1,68 +1,83 @@
 "use client";
 
-import { useEffect } from "react";
-import useStore from "@/app/store/useStore";
-import Header from "./components/header";
-import Footer from "./components/Footer";
-import Experiences from "./components/Experiences";
-import Portfolio from "./components/Portfolio";
+import React, { Suspense } from "react";
+import { usePortfolioData } from "./common/hooks";
+import useStore from "./store/useStore";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Loading, { SkeletonCard } from "./components/Loading";
+
 import Hero from "./components/Hero";
-import Other from "./components/Other";
 import InfiniteLogo from "./components/InfiniteLogo";
-import { motion, useScroll } from "framer-motion";
-// import FuzzyText from "./utlis/FuzzyText";
+import TechStackMarquee from "./components/TechStackMarquee";
+
+// Lazy load components for better performance
+const LazyExperiences = React.lazy(() => import("./components/Experiences"));
+const LazyPortfolio = React.lazy(() => import("./components/Portfolio"));
+const LazyOther = React.lazy(() => import("./components/Other"));
 
 export default function Home() {
-    const setData = useStore((state) => state.setData);
-    const { scrollYProgress } = useScroll();
+  const { data, loading, error, refetch } = usePortfolioData();
+  const { setData } = useStore();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch("/data/data.json");
-            const data = await response.json();
-            setData(data);
-        };
+  // Update store when data is loaded
+  React.useEffect(() => {
+    if (data) {
+      setData(data);
+    }
+  }, [data, setData]);
 
-        fetchData();
-    }, [setData]);
-
-    // const hoverIntensity = 0.5; // Define hoverIntensity
-    // const enableHover = true; // Define enableHover
-
+  if (error) {
     return (
-        <>
-            <motion.div
-                id="scroll-indicator"
-                style={{
-                    scaleX: scrollYProgress,
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 10,
-                    originX: 0,
-                    backgroundColor: "var(--hue-1)",
-                }}
-            />
-            <div className="flex flex-col items-center justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
-                <main className="flex-grow max-w-screen-lg px-4 py-8 mx-auto flex flex-col items-center justify-center">
-                    {/* <div className="flex items-center justify-center">
-                        <FuzzyText
-                            baseIntensity={0.2}
-                            hoverIntensity={hoverIntensity}
-                            enableHover={enableHover}>
-                            503 Maintenance
-                        </FuzzyText>
-                    </div> */}
-                    <Header />
-                    <Hero />
-                    <InfiniteLogo />
-                    <Experiences />
-                    <Portfolio />
-                    <Other />
-                </main>
-                <Footer />
-            </div>
-        </>
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+            Failed to Load Data
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            {error}
+          </p>
+          <button
+            onClick={refetch}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
     );
+  }
+
+  if (loading) {
+    return (
+      <main className="min-h-screen">
+        <div className="space-y-8 p-4">
+          <SkeletonCard className="h-96" />
+          <SkeletonCard className="h-64" />
+          <SkeletonCard className="h-80" />
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <ErrorBoundary>
+      <main className="min-h-screen">
+        <Hero />
+        <TechStackMarquee />
+        {/* <InfiniteLogo /> */}
+        
+        <Suspense fallback={<Loading variant="skeleton" text="Loading experiences..." />}>
+          <LazyExperiences />
+        </Suspense>
+        
+        <Suspense fallback={<Loading variant="skeleton" text="Loading portfolio..." />}>
+          <LazyPortfolio />
+        </Suspense>
+        
+        <Suspense fallback={<Loading variant="skeleton" text="Loading additional content..." />}>
+          <LazyOther />
+        </Suspense>
+      </main>
+    </ErrorBoundary>
+  );
 }
