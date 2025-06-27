@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
-import { useState } from "react";
 import { SOCIAL_LINKS, APP_CONFIG } from '../common/constants';
 
 const containerVariants = {
@@ -27,12 +26,8 @@ const itemVariants = {
 };
 
 const Footer = () => {
-    const [isScrolling, setIsScrolling] = useState(false);
-
     const scrollToTop = () => {
-        setIsScrolling(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        setTimeout(() => setIsScrolling(false), 1000);
     };
 
     return (

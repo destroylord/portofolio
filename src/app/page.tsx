@@ -7,7 +7,6 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Loading, { SkeletonCard } from "./components/Loading";
 
 import Hero from "./components/Hero";
-import InfiniteLogo from "./components/InfiniteLogo";
 import TechStackMarquee from "./components/TechStackMarquee";
 
 // Lazy load components for better performance
@@ -16,68 +15,84 @@ const LazyPortfolio = React.lazy(() => import("./components/Portfolio"));
 const LazyOther = React.lazy(() => import("./components/Other"));
 
 export default function Home() {
-  const { data, loading, error, refetch } = usePortfolioData();
-  const { setData } = useStore();
+    const { data, loading, error, refetch } = usePortfolioData();
+    const { setData } = useStore();
 
-  // Update store when data is loaded
-  React.useEffect(() => {
-    if (data) {
-      setData(data);
+    // Update store when data is loaded
+    React.useEffect(() => {
+        if (data) {
+            setData(data);
+        }
+    }, [data, setData]);
+
+    if (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center p-4">
+                <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                        Failed to Load Data
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        {error}
+                    </p>
+                    <button
+                        onClick={refetch}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        );
     }
-  }, [data, setData]);
 
-  if (error) {
+    if (loading) {
+        return (
+            <main className="min-h-screen">
+                <div className="space-y-8 p-4">
+                    <SkeletonCard className="h-96" />
+                    <SkeletonCard className="h-64" />
+                    <SkeletonCard className="h-80" />
+                </div>
+            </main>
+        );
+    }
+
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-            Failed to Load Data
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
-            {error}
-          </p>
-          <button
-            onClick={refetch}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
+        <ErrorBoundary>
+            <main className="min-h-screen">
+                <Hero />
+                <TechStackMarquee />
 
-  if (loading) {
-    return (
-      <main className="min-h-screen">
-        <div className="space-y-8 p-4">
-          <SkeletonCard className="h-96" />
-          <SkeletonCard className="h-64" />
-          <SkeletonCard className="h-80" />
-        </div>
-      </main>
-    );
-  }
+                <Suspense
+                    fallback={
+                        <Loading
+                            variant="skeleton"
+                            text="Loading experiences..."
+                        />
+                    }>
+                    <LazyExperiences />
+                </Suspense>
 
-  return (
-    <ErrorBoundary>
-      <main className="min-h-screen">
-        <Hero />
-        <TechStackMarquee />
-        {/* <InfiniteLogo /> */}
-        
-        <Suspense fallback={<Loading variant="skeleton" text="Loading experiences..." />}>
-          <LazyExperiences />
-        </Suspense>
-        
-        <Suspense fallback={<Loading variant="skeleton" text="Loading portfolio..." />}>
-          <LazyPortfolio />
-        </Suspense>
-        
-        <Suspense fallback={<Loading variant="skeleton" text="Loading additional content..." />}>
-          <LazyOther />
-        </Suspense>
-      </main>
-    </ErrorBoundary>
-  );
+                <Suspense
+                    fallback={
+                        <Loading
+                            variant="skeleton"
+                            text="Loading portfolio..."
+                        />
+                    }>
+                    <LazyPortfolio />
+                </Suspense>
+
+                <Suspense
+                    fallback={
+                        <Loading
+                            variant="skeleton"
+                            text="Loading additional content..."
+                        />
+                    }>
+                    <LazyOther />
+                </Suspense>
+            </main>
+        </ErrorBoundary>
+    );
 }
