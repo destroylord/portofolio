@@ -103,13 +103,15 @@ export default function ProjectModal({ isOpen, onClose, project }: ProjectModalP
                             {/* Content */}
                             <div className="p-6 space-y-8">
                                 {/* Project Image */}
-                                <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-base-200">
-                                    <Image
-                                        src={project.image}
-                                        alt={project.title}
-                                        fill
-                                        className="object-cover hover:scale-105 transition-transform duration-500"
-                                    />
+                                <div className="flex justify-center">
+                                    <div className="relative w-full max-w-2xl aspect-video overflow-hidden rounded-2xl bg-base-200 shadow-lg">
+                                        <Image
+                                            src={project.image}
+                                            alt={project.title}
+                                            fill
+                                            className="object-contain hover:scale-105 transition-transform duration-500"
+                                        />
+                                    </div>
                                 </div>
 
                                 {/* Description */}

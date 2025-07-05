@@ -13,6 +13,7 @@ export default {
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
                 mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+                lato: ['var(--font-lato)', 'sans-serif'],
             },
             keyframes: {
                 shine: {

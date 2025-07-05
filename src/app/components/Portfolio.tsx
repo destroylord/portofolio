@@ -25,13 +25,16 @@ interface ProjectItem {
 
 export default function Portfolio() {
     const data = useStore((state) => state.data);
-    const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+    const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
+        null
+    );
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [filter, setFilter] = useState("All");
 
-    const filteredData = filter === "All" 
-        ? data 
-        : data.filter(item => item.category === filter);
+    const filteredData =
+        filter === "All"
+            ? data
+            : data.filter((item: ProjectItem) => item.category === filter);
 
     const openModal = (project: ProjectItem) => {
         setSelectedProject(project);

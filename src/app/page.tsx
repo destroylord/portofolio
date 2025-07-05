@@ -20,8 +20,8 @@ export default function Home() {
 
     // Update store when data is loaded
     React.useEffect(() => {
-        if (data) {
-            setData(data);
+        if (data && data.projects) {
+            setData(data.projects);
         }
     }, [data, setData]);
 

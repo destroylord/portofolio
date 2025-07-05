@@ -8,13 +8,15 @@ interface DataItem {
     image: string;
     date: string;
     title: string;
+    category: string;
     description: string;
     techstack: string[];
     links: {
-        github: string;
-        demo: string;
-        download: string;
+        github?: string;
+        demo?: string;
+        download?: string;
     };
+    featured?: boolean;
 }
 
 interface AppState {

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Icon } from "@iconify/react";
-import CircularText from "../utlis/CirculatText";
+// import CircularText from "../utlis/CirculatText";
 import Typed from "typed.js";
 import { useEffect, useRef } from "react";
 import CountUp from "../utlis/CountUp";
@@ -107,7 +107,7 @@ export default function Hero() {
                         </motion.div>
 
                         {/* Circular Text Badge */}
-                        <motion.div 
+                        {/* <motion.div 
                             className="absolute -bottom-8 -right-8 w-32 h-32 bg-base-100 rounded-full shadow-2xl flex items-center justify-center border-4 border-primary/20"
                             whileHover={{ scale: 1.1 }}
                             transition={{ duration: 0.3 }}
@@ -118,7 +118,7 @@ export default function Hero() {
                                 spinDuration={20}
                                 className="text-primary text-sm font-medium"
                             />
-                        </motion.div>
+                        </motion.div> */}
                     </div>
                 </motion.div>
 
@@ -187,10 +187,11 @@ export default function Hero() {
                             View My Work
                         </motion.a>
                         <motion.a
-                            href="#contact"
+                            href="https://wa.me/6285853656272"
                             className="btn btn-outline btn-lg gap-2"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
+                            target="_blank"
                         >
                             <Icon icon="mdi:message" className="w-5 h-5" />
                             Get In Touch

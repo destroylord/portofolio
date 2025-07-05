@@ -1,17 +1,28 @@
-[
-    {
-        "id": 1,
-        "image": "/img-portfolio/dashpay.png",
-        "date": "October 29, 2021",
-        "title": "Dashpay",
-        "category": "Website",
-        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam modi, expedita quos doloremque autem ipsum itaque incidunt ipsam reprehenderit fuga! Dolores quisquam eius cum accusamus?",
-        "techstack": ["Laravel", "Bootstrap"],
-        "links": {
-            "github": "https://github.com/destroylord/dashpay",
-            "demo": ""
-        }
+{
+    "personalInfo": {
+        "name": "Your Name",
+        "title": "Full Stack Developer",
+        "bio": "Passionate developer with expertise in modern web technologies",
+        "email": "your.email@example.com",
+        "location": "Your Location",
+        "avatar": "/avatar.jpg"
     },
+    "experiences": [],
+    "skills": ["React", "Next.js", "TypeScript", "Laravel", "Bootstrap"],
+    "projects": [
+        {
+            "id": 1,
+            "image": "/img-portfolio/dashpay.png",
+            "date": "October 29, 2021",
+            "title": "Dashpay",
+            "category": "Website",
+            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam modi, expedita quos doloremque autem ipsum itaque incidunt ipsam reprehenderit fuga! Dolores quisquam eius cum accusamus?",
+            "techstack": ["Laravel", "Bootstrap"],
+            "links": {
+                "github": "https://github.com/destroylord/dashpay",
+                "demo": ""
+            }
+        },
     {
         "id": 2,
         "image": "/img-portfolio/koperasi.png",
@@ -103,4 +114,5 @@
             "demo": ""
         }
     }
-]
+    ]
+}
