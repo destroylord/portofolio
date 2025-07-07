@@ -16,8 +16,17 @@
             "date": "October 29, 2021",
             "title": "Dashpay",
             "category": "Website",
-            "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam modi, expedita quos doloremque autem ipsum itaque incidunt ipsam reprehenderit fuga! Dolores quisquam eius cum accusamus?",
-            "techstack": ["Laravel", "Bootstrap"],
+            "shortDescription": "Platform pembayaran digital komprehensif yang merevolusi transaksi keuangan untuk bisnis dan individu dengan keamanan tingkat bank dan analitik canggih.",
+            "features": [
+                "Pelacakan transaksi real-time dengan notifikasi instan",
+                "Keamanan tingkat bank dengan enkripsi dan autentikasi dua faktor",
+                "Analitik komprehensif dengan machine learning untuk deteksi fraud",
+                "Dukungan multi-mata uang dan pembayaran berulang otomatis",
+                "Integrasi API yang mudah dengan software akuntansi utama",
+                "Dashboard business intelligence dengan laporan keuangan lengkap"
+            ],
+            "closingStatement": "Transformasi digital yang membawa bisnis Anda ke era pembayaran masa depan.",
+            "techstack": ["Laravel", "TypeScript", "Bootstrap", "Flask", "Python", "Tailwindcss"],
             "links": {
                 "github": "https://github.com/destroylord/dashpay",
                 "demo": ""
@@ -29,7 +38,16 @@
         "date": "November 1, 2021",
         "title": "Koperasi Simpan Pinjam",
         "category": "Website",
-        "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+        "shortDescription": "Sistem manajemen koperasi simpan pinjam yang memudahkan pengelolaan anggota, simpanan, dan pinjaman dengan fitur pelaporan yang komprehensif.",
+        "features": [
+            "Manajemen data anggota dan keanggotaan",
+            "Sistem simpanan dan penarikan otomatis",
+            "Pengelolaan pinjaman dengan perhitungan bunga",
+            "Laporan keuangan dan administrasi lengkap",
+            "Dashboard monitoring untuk pengurus",
+            "Sistem notifikasi pembayaran dan jatuh tempo"
+        ],
+        "closingStatement": "Solusi digital untuk koperasi modern yang transparan dan efisien.",
         "techstack": ["Laravel", "Bootstrap"],
         "links": {
             "github": "https://github.com/destroylord/cooperative",
@@ -42,7 +60,16 @@
         "date": "December 5, 2021",
         "title": "Pepet",
         "category": "Website",
-        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "shortDescription": "Platform e-commerce modern dengan fitur marketplace yang memungkinkan penjual dan pembeli bertransaksi dengan aman dan mudah.",
+        "features": [
+            "Sistem multi-vendor marketplace",
+            "Manajemen produk dan inventori",
+            "Sistem pembayaran terintegrasi",
+            "Rating dan review produk",
+            "Dashboard analytics untuk penjual",
+            "Sistem notifikasi real-time"
+        ],
+        "closingStatement": "Marketplace yang menghubungkan penjual dan pembeli dalam ekosistem digital yang terpercaya.",
         "techstack": ["Laravel", "Bootstrap"],
         "links": {
             "github": "https://github.com/dafrin/dashpay",
@@ -55,7 +82,16 @@
         "date": "December 5, 2021",
         "title": "SAW",
         "category": "Website",
-        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "shortDescription": "Sistem pendukung keputusan menggunakan metode Simple Additive Weighting untuk membantu proses pengambilan keputusan multi-kriteria.",
+        "features": [
+            "Implementasi algoritma SAW (Simple Additive Weighting)",
+            "Input kriteria dan bobot dinamis",
+            "Perhitungan ranking otomatis",
+            "Visualisasi hasil keputusan",
+            "Export laporan hasil analisis",
+            "Interface yang user-friendly"
+        ],
+        "closingStatement": "Solusi cerdas untuk pengambilan keputusan yang objektif dan terukur.",
         "techstack": ["Laravel", "Bootstrap"],
         "links": {
             "github": "https://github.com/destroylord/skotga-web",
@@ -68,7 +104,16 @@
         "date": "December 5, 2021",
         "title": "Polijepay",
         "category": "Website",
-        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "shortDescription": "Platform pembayaran khusus untuk lingkungan kampus Politeknik Negeri Jember dengan fitur pembayaran akademik dan non-akademik.",
+        "features": [
+            "Pembayaran SPP dan biaya akademik",
+            "Sistem pembayaran non-akademik",
+            "Integrasi dengan sistem akademik",
+            "Riwayat transaksi lengkap",
+            "Notifikasi pembayaran real-time",
+            "Dashboard monitoring untuk admin"
+        ],
+        "closingStatement": "Digitalisasi pembayaran kampus untuk kemudahan mahasiswa dan efisiensi administrasi.",
         "techstack": ["Laravel", "Bootstrap"],
         "links": {
             "github": "https://github.com/destroylord/polijepay",
@@ -81,7 +126,16 @@
         "date": "December 5, 2021",
         "title": "SIMOGANG",
         "category": "Website",
-        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "shortDescription": "Sistem informasi monitoring magang yang memudahkan pengelolaan dan pemantauan kegiatan magang mahasiswa secara real-time.",
+        "features": [
+            "Monitoring kegiatan magang real-time",
+            "Manajemen data mahasiswa dan pembimbing",
+            "Sistem pelaporan kegiatan harian",
+            "Dashboard progress untuk semua stakeholder",
+            "Evaluasi dan penilaian magang",
+            "Notifikasi deadline dan reminder"
+        ],
+        "closingStatement": "Digitalisasi proses magang untuk pengalaman yang lebih terstruktur dan efektif.",
         "techstack": ["Laravel", "Bootstrap"],
         "links": {
             "github": "https://github.com/destroylord/monitoring-magang",
@@ -94,7 +148,16 @@
         "date": "December 5, 2021",
         "title": "Votype",
         "category": "Website",
-        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "shortDescription": "Platform voting online yang aman dan transparan untuk berbagai jenis pemilihan dengan sistem keamanan berlapis.",
+        "features": [
+            "Sistem voting online yang aman",
+            "Autentikasi multi-level",
+            "Real-time vote counting",
+            "Dashboard hasil pemilihan",
+            "Audit trail lengkap",
+            "Interface responsive dan user-friendly"
+        ],
+        "closingStatement": "Demokrasi digital yang transparan dan dapat dipercaya untuk era modern.",
         "techstack": ["Laravel", "Bootstrap"],
         "links": {
             "github": "",
@@ -107,7 +170,16 @@
         "date": "December 5, 2021",
         "title": "Klasifikasi Sel Darah Merah",
         "category": "Website",
-        "description": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+        "shortDescription": "Aplikasi machine learning untuk klasifikasi otomatis sel darah merah menggunakan computer vision dan deep learning.",
+        "features": [
+            "Klasifikasi otomatis sel darah merah",
+            "Upload dan analisis gambar mikroskopis",
+            "Algoritma machine learning terintegrasi",
+            "Visualisasi hasil klasifikasi",
+            "Export laporan analisis",
+            "Interface yang mudah digunakan untuk medis"
+        ],
+        "closingStatement": "Teknologi AI untuk mendukung diagnosis medis yang lebih akurat dan efisien.",
         "techstack": ["Flask", "Bootstrap", "Python"],
         "links": {
             "github": "",

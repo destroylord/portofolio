@@ -7,21 +7,9 @@ import ShinyText from "../utlis/ShinyText";
 import ProjectModal from "./ProjectModal";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Project } from '../common/types';
 
-interface ProjectItem {
-    id: number;
-    image: string;
-    date: string;
-    title: string;
-    category: string;
-    description: string;
-    techstack: string[];
-    links: {
-        github?: string;
-        demo?: string;
-        download?: string;
-    };
-}
+type ProjectItem = Project;
 
 export default function Portfolio() {
     const data = useStore((state) => state.data);
@@ -181,7 +169,7 @@ export default function Portfolio() {
                                 </h3>
 
                                 <p className="text-base-content/80 mb-4 line-clamp-3">
-                                    {item.description}
+                                    {item.shortDescription}
                                 </p>
 
                                 <div className="flex flex-wrap gap-2 mb-4">

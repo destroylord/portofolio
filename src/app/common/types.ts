@@ -13,7 +13,10 @@ export interface Experience {
 export interface Project {
   id: number;
   title: string;
-  description: string;
+  description?: string;
+  shortDescription: string;
+  features: string[];
+  closingStatement: string;
   image: string;
   date: string;
   category: string;
