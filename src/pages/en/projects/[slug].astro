@@ -1,0 +1,23 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ProjectDetailPage from "../../../components/pages/ProjectDetailPage.astro";
+import { getProjectBySlug } from "../../../data/i18n";
+
+export const prerender = false;
+
+const slug = Astro.params.slug;
+const project = slug ? await getProjectBySlug("en", slug) : null;
+
+if (!project) {
+  return Astro.redirect("/en/projects");
+}
+---
+
+<Layout
+  title={`${project.title} | Warm Story`}
+  activePath="/projects"
+  routePath={`projects/${project.slug}`}
+  lang="en"
+>
+  <ProjectDetailPage lang="en" project={project} />
+</Layout>

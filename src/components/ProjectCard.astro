@@ -1,0 +1,32 @@
+---
+import type { Project } from "../data/site";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Lang } from "../data/i18n";
+
+interface Props {
+  project: Project;
+  compact?: boolean;
+  lang: Lang;
+}
+
+const { project, compact = false, lang } = Astro.props;
+const href = getRelativeLocaleUrl(lang, `projects/${project.slug}`);
+---
+
+<article class:list={["project-card", compact && "project-card--compact"]}>
+  <a class="project-card__media" href={href}>
+    <img src={project.cover} alt={project.coverAlt} loading="lazy" />
+  </a>
+  <div class="project-card__content">
+    <div class="tag-row">
+      {project.categories.map((category) => <span class="tag">{category}</span>)}
+    </div>
+    <h3 class="project-card__title">
+      <a href={href}>{project.title}</a>
+    </h3>
+    <p class="project-card__summary">{project.summary}</p>
+    <div class="stack-row">
+      {project.stack.map((item) => <span class="stack-pill">{item}</span>)}
+    </div>
+  </div>
+</article>

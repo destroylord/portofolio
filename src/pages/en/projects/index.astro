@@ -1,0 +1,11 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import ProjectsPage from "../../../components/pages/ProjectsPage.astro";
+import { getProjectsCopy } from "../../../data/i18n";
+
+const copy = getProjectsCopy("en");
+---
+
+<Layout title={copy.title} activePath="/projects" routePath="projects" lang="en">
+  <ProjectsPage lang="en" />
+</Layout>

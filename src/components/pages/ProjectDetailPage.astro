@@ -1,0 +1,112 @@
+---
+import SectionHeading from "../SectionHeading.astro";
+import { getProjectDetailCopy, type Lang } from "../../data/i18n";
+import type { Project } from "../../data/site";
+
+interface Props {
+  lang: Lang;
+  project: Project;
+}
+
+const { lang, project } = Astro.props;
+const copy = getProjectDetailCopy(lang);
+---
+
+<section class="page-section" style="padding-top: 4rem;">
+  <div class="content-stack">
+    <div>
+      <p class="eyebrow">{copy.caseStudy}</p>
+      <h1 class="display-title" style="font-size: clamp(2.8rem, 6vw, 4.5rem);">{project.title}</h1>
+    </div>
+
+    <div class="meta-row">
+      <span class="meta-pill">{copy.role}: {project.role}</span>
+      <span class="meta-pill">{copy.year}: {project.year}</span>
+      <span class="tag">{copy.client}: {project.client}</span>
+      <span class="meta-pill">{copy.tech}: {project.stack.join(", ")}</span>
+    </div>
+
+    <div class="hero-panel">
+      <img src={project.cover} alt={project.coverAlt} />
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <SectionHeading eyebrow={copy.challengeEyebrow} title={copy.challengeTitle} />
+  <div class="content-card rich-text">
+    {project.challenge.map((paragraph) => <p>{paragraph}</p>)}
+  </div>
+</section>
+
+{project.insights.length > 0 && (
+  <section class="page-section">
+    <SectionHeading eyebrow={copy.insightsEyebrow} title={copy.insightsTitle} />
+    <div class="insight-grid">
+      {project.insights.map((insight) => (
+        <article class="insight-card">
+          <div class="metric-card__label">{insight.title}</div>
+          <p class="body-copy" style="margin-top: 0.7rem;">{insight.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
+
+{(project.process.length > 0 || project.gallery.length > 0) && (
+  <section class="page-section">
+    <SectionHeading eyebrow={copy.processEyebrow} title={copy.processTitle} />
+    {project.process.length > 0 && (
+      <div class="content-card rich-text">
+        {project.process.map((item) => <p><strong>{item.title}.</strong> {item.body}</p>)}
+      </div>
+    )}
+
+    {project.gallery.length > 0 && (
+      <div class="gallery-grid" style="margin-top: 1.5rem;">
+        {project.gallery.map((item) => (
+          <figure class="content-card" style="padding: 1rem;">
+            <img
+              src={item.image}
+              alt={item.alt}
+              style="border-radius: 1rem; aspect-ratio: 16/10; object-fit: cover; width: 100%;"
+            />
+            <figcaption class="metric-card__label" style="margin-top: 0.85rem;">{item.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    )}
+  </section>
+)}
+
+<section class="page-section">
+  <SectionHeading eyebrow={copy.outcomeEyebrow} title={copy.outcomeTitle} />
+  <div class="content-card rich-text">
+    {project.solution.map((paragraph) => <p>{paragraph}</p>)}
+  </div>
+
+  {project.codeSample && (
+    <div class="code-block" style="margin-top: 1.5rem;">
+      <div class="code-block__header">
+        <span class="code-block__dot code-block__dot--red"></span>
+        <span class="code-block__dot code-block__dot--yellow"></span>
+        <span class="code-block__dot code-block__dot--green"></span>
+        <span>{project.codeSample.file}</span>
+      </div>
+      <pre><code>{project.codeSample.code}</code></pre>
+    </div>
+  )}
+</section>
+
+<section class="page-section">
+  <SectionHeading eyebrow={copy.metricsEyebrow} title={copy.metricsTitle} align="center" />
+  <div class="metrics-grid">
+    {project.metrics.map((metric) => (
+      <article class="metric-card">
+        <div class="metric-card__label">{metric.label}</div>
+        <div class="metric-card__value">{metric.value}</div>
+      </article>
+    ))}
+  </div>
+</section>
+

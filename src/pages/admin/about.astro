@@ -1,0 +1,133 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { getAboutCopy, getSkills } from "../../data/i18n";
+import { getAboutContentRecord } from "../../lib/server/content.js";
+
+const aboutRecord = await getAboutContentRecord();
+const saved = Astro.url.searchParams.get("saved") === "1";
+const error = Astro.url.searchParams.get("error");
+
+const aboutId = getAboutCopy("id");
+const aboutEn = getAboutCopy("en");
+const skillsId = getSkills("id");
+const skillsEn = getSkills("en");
+
+const prettyJson = (value) => JSON.stringify(value ?? [], null, 2);
+---
+
+<AdminLayout title="About Content">
+  <article class="admin-card" style="margin-bottom: 1.5rem;">
+    <p class="eyebrow">About Module</p>
+    <h2 class="admin-card__title">Edit intro, story, quote, dan skills bilingual</h2>
+    <p class="body-copy">
+      {error
+        ? error
+        : saved
+        ? "Perubahan about content berhasil disimpan."
+        : "Struktur form ini memang masih eksplisit supaya isi bilingual dan JSON skill cards lebih mudah diaudit."}
+    </p>
+  </article>
+
+  <form action="/api/admin/about" class="admin-form" method="POST">
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="eyebrowId">Eyebrow ID</label>
+        <input id="eyebrowId" name="eyebrowId" type="text" value={aboutRecord?.eyebrow?.id ?? aboutId.eyebrow} required />
+      </div>
+      <div class="field">
+        <label for="eyebrowEn">Eyebrow EN</label>
+        <input id="eyebrowEn" name="eyebrowEn" type="text" value={aboutRecord?.eyebrow?.en ?? aboutEn.eyebrow} required />
+      </div>
+      <div class="field">
+        <label for="heroTitleId">Hero Title ID</label>
+        <textarea id="heroTitleId" name="heroTitleId" rows="4" required>{aboutRecord?.heroTitle?.id ?? aboutId.heroTitle}</textarea>
+      </div>
+      <div class="field">
+        <label for="heroTitleEn">Hero Title EN</label>
+        <textarea id="heroTitleEn" name="heroTitleEn" rows="4" required>{aboutRecord?.heroTitle?.en ?? aboutEn.heroTitle}</textarea>
+      </div>
+      <div class="field">
+        <label for="heroBodyId">Hero Body ID</label>
+        <textarea id="heroBodyId" name="heroBodyId" rows="5" required>{aboutRecord?.heroBody?.id ?? aboutId.heroBody}</textarea>
+      </div>
+      <div class="field">
+        <label for="heroBodyEn">Hero Body EN</label>
+        <textarea id="heroBodyEn" name="heroBodyEn" rows="5" required>{aboutRecord?.heroBody?.en ?? aboutEn.heroBody}</textarea>
+      </div>
+      <div class="field">
+        <label for="storyEyebrowId">Story Eyebrow ID</label>
+        <input id="storyEyebrowId" name="storyEyebrowId" type="text" value={aboutRecord?.storyEyebrow?.id ?? aboutId.storyEyebrow} required />
+      </div>
+      <div class="field">
+        <label for="storyEyebrowEn">Story Eyebrow EN</label>
+        <input id="storyEyebrowEn" name="storyEyebrowEn" type="text" value={aboutRecord?.storyEyebrow?.en ?? aboutEn.storyEyebrow} required />
+      </div>
+      <div class="field">
+        <label for="storyTitleId">Story Title ID</label>
+        <textarea id="storyTitleId" name="storyTitleId" rows="4" required>{aboutRecord?.storyTitle?.id ?? aboutId.storyTitle}</textarea>
+      </div>
+      <div class="field">
+        <label for="storyTitleEn">Story Title EN</label>
+        <textarea id="storyTitleEn" name="storyTitleEn" rows="4" required>{aboutRecord?.storyTitle?.en ?? aboutEn.storyTitle}</textarea>
+      </div>
+    </div>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="storyId">Story Paragraphs ID</label>
+        <textarea id="storyId" name="storyId" rows="9">{(aboutRecord?.story?.id ?? aboutId.story).join("\n")}</textarea>
+      </div>
+      <div class="field">
+        <label for="storyEn">Story Paragraphs EN</label>
+        <textarea id="storyEn" name="storyEn" rows="9">{(aboutRecord?.story?.en ?? aboutEn.story).join("\n")}</textarea>
+      </div>
+      <div class="field">
+        <label for="quoteId">Quote ID</label>
+        <textarea id="quoteId" name="quoteId" rows="4" required>{aboutRecord?.quote?.id ?? aboutId.quote}</textarea>
+      </div>
+      <div class="field">
+        <label for="quoteEn">Quote EN</label>
+        <textarea id="quoteEn" name="quoteEn" rows="4" required>{aboutRecord?.quote?.en ?? aboutEn.quote}</textarea>
+      </div>
+      <div class="field">
+        <label for="quoteById">Quote By ID</label>
+        <input id="quoteById" name="quoteById" type="text" value={aboutRecord?.quoteBy?.id ?? aboutId.quoteBy} required />
+      </div>
+      <div class="field">
+        <label for="quoteByEn">Quote By EN</label>
+        <input id="quoteByEn" name="quoteByEn" type="text" value={aboutRecord?.quoteBy?.en ?? aboutEn.quoteBy} required />
+      </div>
+      <div class="field">
+        <label for="skillsEyebrowId">Skills Eyebrow ID</label>
+        <input id="skillsEyebrowId" name="skillsEyebrowId" type="text" value={aboutRecord?.skillsEyebrow?.id ?? aboutId.skillsEyebrow} required />
+      </div>
+      <div class="field">
+        <label for="skillsEyebrowEn">Skills Eyebrow EN</label>
+        <input id="skillsEyebrowEn" name="skillsEyebrowEn" type="text" value={aboutRecord?.skillsEyebrow?.en ?? aboutEn.skillsEyebrow} required />
+      </div>
+      <div class="field">
+        <label for="skillsTitleId">Skills Title ID</label>
+        <textarea id="skillsTitleId" name="skillsTitleId" rows="4" required>{aboutRecord?.skillsTitle?.id ?? aboutId.skillsTitle}</textarea>
+      </div>
+      <div class="field">
+        <label for="skillsTitleEn">Skills Title EN</label>
+        <textarea id="skillsTitleEn" name="skillsTitleEn" rows="4" required>{aboutRecord?.skillsTitle?.en ?? aboutEn.skillsTitle}</textarea>
+      </div>
+    </div>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="skillsId">Skills Cards ID JSON</label>
+        <textarea id="skillsId" name="skillsId" rows="12" placeholder='[{"title":"UX Research","body":"...","tags":["Interviews"]}]'>{prettyJson(aboutRecord?.skills?.id ?? skillsId)}</textarea>
+        <p class="field-hint">Format tiap item: `title`, `body`, dan `tags` berupa array string.</p>
+      </div>
+      <div class="field">
+        <label for="skillsEn">Skills Cards EN JSON</label>
+        <textarea id="skillsEn" name="skillsEn" rows="12" placeholder='[{"title":"UX Research","body":"...","tags":["Interviews"]}]'>{prettyJson(aboutRecord?.skills?.en ?? skillsEn)}</textarea>
+        <p class="field-hint">Pastikan jumlah dan urutan item English tetap sejajar dengan versi Indonesia.</p>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Save About Content</button>
+  </form>
+</AdminLayout>

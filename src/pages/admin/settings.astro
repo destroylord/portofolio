@@ -1,0 +1,201 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { getContactCopy, getHomeCopy, getSiteCopy } from "../../data/i18n";
+import { getSiteContentRecord } from "../../lib/server/content.js";
+
+const siteRecord = await getSiteContentRecord();
+const saved = Astro.url.searchParams.get("saved") === "1";
+const error = Astro.url.searchParams.get("error");
+
+const siteId = getSiteCopy("id");
+const siteEn = getSiteCopy("en");
+const homeId = getHomeCopy("id");
+const homeEn = getHomeCopy("en");
+const contactId = getContactCopy("id");
+const contactEn = getContactCopy("en");
+
+const prettyJson = (value) => JSON.stringify(value ?? [], null, 2);
+---
+
+<AdminLayout title="Site Settings">
+  <article class="admin-card" style="margin-bottom: 1.5rem;">
+    <p class="eyebrow">Global Settings</p>
+    <h2 class="admin-card__title">Edit public brand, home, dan contact content</h2>
+    <p class="body-copy">
+      {error
+        ? error
+        : saved
+        ? "Perubahan site settings berhasil disimpan."
+        : "Modul ini sekarang sudah terhubung ke database. Kalau tabel masih kosong, form otomatis memakai fallback dari copy statis yang lama."}
+    </p>
+  </article>
+
+  <form action="/api/admin/settings" class="admin-form" method="POST">
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="name">Brand Name</label>
+        <input id="name" name="name" type="text" value={siteRecord?.name ?? siteId.name} required />
+      </div>
+      <div class="field">
+        <label for="title">Site Title</label>
+        <input id="title" name="title" type="text" value={siteRecord?.title ?? siteId.title} required />
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" value={siteRecord?.email ?? siteId.email} required />
+      </div>
+      <div class="field">
+        <label for="location">Location</label>
+        <input id="location" name="location" type="text" value={siteRecord?.location ?? siteId.location} required />
+      </div>
+      <div class="field">
+        <label for="timezone">Timezone</label>
+        <input id="timezone" name="timezone" type="text" value={siteRecord?.timezone ?? siteId.timezone} required />
+      </div>
+      <div class="field admin-form__wide">
+        <label for="socials">Social Links JSON</label>
+        <textarea id="socials" name="socials" rows="8" placeholder='[{"label":"LinkedIn","href":"https://www.linkedin.com/"}]'>{prettyJson(siteRecord?.socials ?? siteId.socials)}</textarea>
+        <p class="field-hint">Format wajib berupa array object dengan `label` dan `href`.</p>
+      </div>
+    </div>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="descriptionId">Site Description ID</label>
+        <textarea id="descriptionId" name="descriptionId" rows="4" required>{siteRecord?.description?.id ?? siteId.description}</textarea>
+      </div>
+      <div class="field">
+        <label for="descriptionEn">Site Description EN</label>
+        <textarea id="descriptionEn" name="descriptionEn" rows="4" required>{siteRecord?.description?.en ?? siteEn.description}</textarea>
+      </div>
+      <div class="field">
+        <label for="availabilityId">Availability ID</label>
+        <input id="availabilityId" name="availabilityId" type="text" value={siteRecord?.availability?.id ?? siteId.availability} required />
+      </div>
+      <div class="field">
+        <label for="availabilityEn">Availability EN</label>
+        <input id="availabilityEn" name="availabilityEn" type="text" value={siteRecord?.availability?.en ?? siteEn.availability} required />
+      </div>
+      <div class="field">
+        <label for="footerCopyId">Footer Copy ID</label>
+        <textarea id="footerCopyId" name="footerCopyId" rows="4" required>{siteRecord?.footerCopy?.id ?? siteId.footerCopy}</textarea>
+      </div>
+      <div class="field">
+        <label for="footerCopyEn">Footer Copy EN</label>
+        <textarea id="footerCopyEn" name="footerCopyEn" rows="4" required>{siteRecord?.footerCopy?.en ?? siteEn.footerCopy}</textarea>
+      </div>
+      <div class="field">
+        <label for="ctaLabelId">Header CTA ID</label>
+        <input id="ctaLabelId" name="ctaLabelId" type="text" value={siteRecord?.ctaLabel?.id ?? siteId.ctaLabel} required />
+      </div>
+      <div class="field">
+        <label for="ctaLabelEn">Header CTA EN</label>
+        <input id="ctaLabelEn" name="ctaLabelEn" type="text" value={siteRecord?.ctaLabel?.en ?? siteEn.ctaLabel} required />
+      </div>
+      <div class="field">
+        <label for="mobileEyebrowId">Mobile Eyebrow ID</label>
+        <input id="mobileEyebrowId" name="mobileEyebrowId" type="text" value={siteRecord?.mobileEyebrow?.id ?? siteId.mobileEyebrow} required />
+      </div>
+      <div class="field">
+        <label for="mobileEyebrowEn">Mobile Eyebrow EN</label>
+        <input id="mobileEyebrowEn" name="mobileEyebrowEn" type="text" value={siteRecord?.mobileEyebrow?.en ?? siteEn.mobileEyebrow} required />
+      </div>
+      <div class="field">
+        <label for="mobileCtaId">Mobile CTA ID</label>
+        <input id="mobileCtaId" name="mobileCtaId" type="text" value={siteRecord?.mobileCta?.id ?? siteId.mobileCta} required />
+      </div>
+      <div class="field">
+        <label for="mobileCtaEn">Mobile CTA EN</label>
+        <input id="mobileCtaEn" name="mobileCtaEn" type="text" value={siteRecord?.mobileCta?.en ?? siteEn.mobileCta} required />
+      </div>
+    </div>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="homeEyebrowId">Home Eyebrow ID</label>
+        <input id="homeEyebrowId" name="homeEyebrowId" type="text" value={siteRecord?.homeEyebrow?.id ?? homeId.eyebrow} required />
+      </div>
+      <div class="field">
+        <label for="homeEyebrowEn">Home Eyebrow EN</label>
+        <input id="homeEyebrowEn" name="homeEyebrowEn" type="text" value={siteRecord?.homeEyebrow?.en ?? homeEn.eyebrow} required />
+      </div>
+      <div class="field">
+        <label for="homeHeroTitleId">Home Hero Title ID</label>
+        <textarea id="homeHeroTitleId" name="homeHeroTitleId" rows="4" required>{siteRecord?.homeHeroTitle?.id ?? homeId.heroTitle}</textarea>
+      </div>
+      <div class="field">
+        <label for="homeHeroTitleEn">Home Hero Title EN</label>
+        <textarea id="homeHeroTitleEn" name="homeHeroTitleEn" rows="4" required>{siteRecord?.homeHeroTitle?.en ?? homeEn.heroTitle}</textarea>
+      </div>
+      <div class="field">
+        <label for="homeHeroBodyId">Home Hero Body ID</label>
+        <textarea id="homeHeroBodyId" name="homeHeroBodyId" rows="5" required>{siteRecord?.homeHeroBody?.id ?? homeId.heroBody}</textarea>
+      </div>
+      <div class="field">
+        <label for="homeHeroBodyEn">Home Hero Body EN</label>
+        <textarea id="homeHeroBodyEn" name="homeHeroBodyEn" rows="5" required>{siteRecord?.homeHeroBody?.en ?? homeEn.heroBody}</textarea>
+      </div>
+      <div class="field">
+        <label for="homePrimaryCtaId">Home Primary CTA ID</label>
+        <input id="homePrimaryCtaId" name="homePrimaryCtaId" type="text" value={siteRecord?.homePrimaryCta?.id ?? homeId.primaryCta} required />
+      </div>
+      <div class="field">
+        <label for="homePrimaryCtaEn">Home Primary CTA EN</label>
+        <input id="homePrimaryCtaEn" name="homePrimaryCtaEn" type="text" value={siteRecord?.homePrimaryCta?.en ?? homeEn.primaryCta} required />
+      </div>
+      <div class="field">
+        <label for="homeSecondaryCtaId">Home Secondary CTA ID</label>
+        <input id="homeSecondaryCtaId" name="homeSecondaryCtaId" type="text" value={siteRecord?.homeSecondaryCta?.id ?? homeId.secondaryCta} required />
+      </div>
+      <div class="field">
+        <label for="homeSecondaryCtaEn">Home Secondary CTA EN</label>
+        <input id="homeSecondaryCtaEn" name="homeSecondaryCtaEn" type="text" value={siteRecord?.homeSecondaryCta?.en ?? homeEn.secondaryCta} required />
+      </div>
+      <div class="field">
+        <label for="homeHeroNoteTitleId">Home Note Title ID</label>
+        <input id="homeHeroNoteTitleId" name="homeHeroNoteTitleId" type="text" value={siteRecord?.homeHeroNoteTitle?.id ?? homeId.heroNoteTitle} required />
+      </div>
+      <div class="field">
+        <label for="homeHeroNoteTitleEn">Home Note Title EN</label>
+        <input id="homeHeroNoteTitleEn" name="homeHeroNoteTitleEn" type="text" value={siteRecord?.homeHeroNoteTitle?.en ?? homeEn.heroNoteTitle} required />
+      </div>
+      <div class="field">
+        <label for="homeHeroNoteBodyId">Home Note Body ID</label>
+        <textarea id="homeHeroNoteBodyId" name="homeHeroNoteBodyId" rows="4" required>{siteRecord?.homeHeroNoteBody?.id ?? homeId.heroNoteBody}</textarea>
+      </div>
+      <div class="field">
+        <label for="homeHeroNoteBodyEn">Home Note Body EN</label>
+        <textarea id="homeHeroNoteBodyEn" name="homeHeroNoteBodyEn" rows="4" required>{siteRecord?.homeHeroNoteBody?.en ?? homeEn.heroNoteBody}</textarea>
+      </div>
+    </div>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="contactEyebrowId">Contact Eyebrow ID</label>
+        <input id="contactEyebrowId" name="contactEyebrowId" type="text" value={siteRecord?.contactEyebrow?.id ?? contactId.eyebrow} required />
+      </div>
+      <div class="field">
+        <label for="contactEyebrowEn">Contact Eyebrow EN</label>
+        <input id="contactEyebrowEn" name="contactEyebrowEn" type="text" value={siteRecord?.contactEyebrow?.en ?? contactEn.eyebrow} required />
+      </div>
+      <div class="field">
+        <label for="contactHeadingId">Contact Heading ID</label>
+        <textarea id="contactHeadingId" name="contactHeadingId" rows="4" required>{siteRecord?.contactHeading?.id ?? contactId.heading}</textarea>
+      </div>
+      <div class="field">
+        <label for="contactHeadingEn">Contact Heading EN</label>
+        <textarea id="contactHeadingEn" name="contactHeadingEn" rows="4" required>{siteRecord?.contactHeading?.en ?? contactEn.heading}</textarea>
+      </div>
+      <div class="field">
+        <label for="contactBodyId">Contact Body ID</label>
+        <textarea id="contactBodyId" name="contactBodyId" rows="5" required>{siteRecord?.contactBody?.id ?? contactId.body}</textarea>
+      </div>
+      <div class="field">
+        <label for="contactBodyEn">Contact Body EN</label>
+        <textarea id="contactBodyEn" name="contactBodyEn" rows="5" required>{siteRecord?.contactBody?.en ?? contactEn.body}</textarea>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Save Site Settings</button>
+  </form>
+</AdminLayout>

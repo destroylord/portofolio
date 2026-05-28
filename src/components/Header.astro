@@ -1,0 +1,63 @@
+---
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { getSiteCopyContent, type Lang } from "../data/i18n";
+
+interface Props {
+  activePath?: string;
+  routePath?: string;
+  lang: Lang;
+}
+
+const { activePath = "/", routePath = "", lang } = Astro.props;
+const site = await getSiteCopyContent(lang);
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href={getRelativeLocaleUrl(lang, "")}>{site.name}</a>
+
+    <nav class="desktop-nav" aria-label="Primary">
+      {
+        site.nav.map((item) => (
+          <a
+            class:list={["nav-link", activePath === item.href && "is-active"]}
+            href={getRelativeLocaleUrl(lang, item.href === "/" ? "" : item.href.slice(1))}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="header-actions">
+      <LanguageSwitcher lang={lang} routePath={routePath} />
+      <a class="btn btn-primary desktop-cta" href={getRelativeLocaleUrl(lang, "contact")}>{site.ctaLabel}</a>
+    </div>
+
+    <details class="mobile-menu">
+      <summary aria-label="Open menu">
+        <span class="material-symbols-outlined">menu</span>
+      </summary>
+      <div class="mobile-menu__panel">
+        <div class="mobile-menu__eyebrow">{site.mobileEyebrow}</div>
+        <div class="mobile-menu__lang">
+          <LanguageSwitcher lang={lang} routePath={routePath} />
+        </div>
+        <nav class="mobile-nav" aria-label="Mobile primary">
+          {
+            site.nav.map((item) => (
+              <a
+                class:list={["mobile-nav__link", activePath === item.href && "is-active"]}
+                href={getRelativeLocaleUrl(lang, item.href === "/" ? "" : item.href.slice(1))}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+        <a class="btn btn-primary mobile-menu__cta" href={getRelativeLocaleUrl(lang, "contact")}>{site.mobileCta}</a>
+      </div>
+    </details>
+  </div>
+</header>

@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactPage from "../components/pages/ContactPage.astro";
+import { getContactCopyContent } from "../data/i18n";
+
+const copy = await getContactCopyContent("id");
+---
+
+<Layout title={copy.title} activePath="/contact" routePath="contact" lang="id">
+  <ContactPage lang="id" />
+</Layout>

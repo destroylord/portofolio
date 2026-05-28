@@ -1,0 +1,56 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { getAboutContentRecord, getSiteContentRecord } from "../../lib/server/content.js";
+import { listAdminProjects } from "../../lib/server/projects.js";
+
+let projectCount = 0;
+let publishedCount = 0;
+let draftCount = 0;
+let featuredCount = 0;
+
+try {
+  const projects = await listAdminProjects();
+  projectCount = projects.length;
+  publishedCount = projects.filter((project) => project.published).length;
+  draftCount = projects.filter((project) => !project.published).length;
+  featuredCount = projects.filter((project) => project.featured).length;
+} catch {
+  projectCount = 0;
+  publishedCount = 0;
+  draftCount = 0;
+  featuredCount = 0;
+}
+
+const siteContent = await getSiteContentRecord();
+const aboutContent = await getAboutContentRecord();
+---
+
+<AdminLayout title="Admin Overview">
+  <section class="admin-grid">
+    <article class="admin-card">
+      <p class="eyebrow">Status</p>
+      <h2 class="admin-card__title">Authentication ready</h2>
+      <p class="body-copy">
+        Better Auth, session middleware, dan proteksi route admin sudah aktif. Fondasi private area sudah aman untuk lanjut ke modul konten.
+      </p>
+    </article>
+
+    <article class="admin-card">
+      <p class="eyebrow">Projects</p>
+      <h2 class="admin-card__title">{projectCount} project tercatat</h2>
+      <p class="body-copy">
+        Published: {publishedCount}. Draft: {draftCount}. Featured: {featuredCount}. Modul project sekarang sudah punya CRUD dan structured editor.
+      </p>
+    </article>
+
+    <article class="admin-card">
+      <p class="eyebrow">Modules</p>
+      <h2 class="admin-card__title">Dynamic content is expanding</h2>
+      <p class="body-copy">
+        Site settings: {siteContent ? "connected to database" : "still using static fallback"}.
+        About content: {aboutContent ? "connected to database" : "still using static fallback"}.
+        Jika tabel inti belum terisi, jalankan `npm run db:seed-content`.
+      </p>
+    </article>
+  </section>
+</AdminLayout>

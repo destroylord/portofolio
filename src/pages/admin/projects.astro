@@ -1,0 +1,54 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { listAdminProjects } from "../../lib/server/projects.js";
+
+let projects = [];
+let loadError = "";
+const actionError = Astro.url.searchParams.get("error");
+
+try {
+  projects = await listAdminProjects();
+} catch (error) {
+  loadError = error instanceof Error ? error.message : "Failed to load projects.";
+}
+---
+
+<AdminLayout title="Manage Projects">
+  <article class="admin-card" style="margin-bottom: 1rem;">
+    <div class="admin-page-header">
+      <div>
+        <p class="eyebrow">Projects Database</p>
+        <h2 class="admin-card__title">Existing Projects</h2>
+        <p class="body-copy">List project, cek status publish, lalu masuk ke halaman edit per project saat perlu perubahan.</p>
+      </div>
+      <a class="btn btn-primary" href="/admin/projects/new">Add Project</a>
+    </div>
+    {actionError ? <p class="body-copy">{actionError}</p> : null}
+  </article>
+
+  <section>
+    <article class="admin-card">
+      {
+        loadError ? (
+          <p class="body-copy">{loadError}</p>
+        ) : projects.length === 0 ? (
+          <p class="body-copy">
+            Belum ada project di database. Mulai dari tombol `Add Project` untuk membuat entri pertama.
+          </p>
+        ) : (
+          <div class="admin-list">
+            {projects.map((project) => (
+              <a class="admin-list__item" href={`/admin/projects/${project.id}`}>
+                <div>
+                  <strong>{project.slug}</strong>
+                  <span>{project.year} · {project.published ? "Published" : "Draft"}</span>
+                </div>
+                <span>{project.featured ? "Featured" : "Standard"}</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </article>
+  </section>
+</AdminLayout>

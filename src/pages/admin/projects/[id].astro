@@ -1,0 +1,154 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import AdminProjectStructuredFields from "../../../components/AdminProjectStructuredFields.astro";
+import { getAdminProjectById } from "../../../lib/server/projects.js";
+
+const id = Astro.params.id;
+const project = id ? await getAdminProjectById(id) : null;
+const saved = Astro.url.searchParams.get("saved") === "1";
+const error = Astro.url.searchParams.get("error");
+
+if (!project) {
+  return Astro.redirect("/admin/projects");
+}
+---
+
+<AdminLayout title={`Edit Project: ${project.slug}`}>
+  {
+    saved || error ? (
+      <article class="admin-card" style="margin-bottom: 1.5rem;">
+        <p class="eyebrow">{saved ? "Saved" : "Error"}</p>
+        <h2 class="admin-card__title">{saved ? "Project updated" : "Update failed"}</h2>
+        <p class="body-copy">{saved ? "Perubahan project berhasil disimpan." : error}</p>
+      </article>
+    ) : null
+  }
+  <form action={`/api/admin/projects/${project.id}`} class="admin-form" method="POST">
+    <input type="hidden" name="action" value="update" />
+    <p class="body-copy">
+      Structured content sekarang bisa diedit dari input berulang. `Challenge` dan `Solution` tetap diisi satu poin per baris.
+    </p>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="slug">Slug</label>
+        <input id="slug" name="slug" type="text" value={project.slug} placeholder="brewing-better-ux" required />
+        <p class="field-hint">Gunakan huruf kecil dan tanda hubung.</p>
+      </div>
+      <div class="field">
+        <label for="year">Year</label>
+        <input id="year" name="year" type="text" value={project.year} required />
+      </div>
+      <div class="field">
+        <label for="sortOrder">Sort Order</label>
+        <input id="sortOrder" name="sortOrder" type="number" value={project.sortOrder} />
+      </div>
+      <div class="field">
+        <label for="cover">Cover URL</label>
+        <input id="cover" name="cover" type="text" value={project.cover} placeholder="https://example.com/project-cover.jpg" required />
+      </div>
+      <div class="field admin-form__wide">
+        <label for="coverAlt">Cover Alt</label>
+        <input id="coverAlt" name="coverAlt" type="text" value={project.coverAlt} placeholder="Mockup aplikasi pemesanan kopi di layar ponsel" required />
+      </div>
+      <div class="field">
+        <label for="categories">Categories</label>
+        <input id="categories" name="categories" type="text" value={project.categories.join(", ")} placeholder="UX Research, UI Design" />
+      </div>
+      <div class="field">
+        <label for="stack">Stack</label>
+        <input id="stack" name="stack" type="text" value={project.stack.join(", ")} placeholder="Astro, Laravel, MySQL" />
+      </div>
+    </div>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="titleId">Title ID</label>
+        <input id="titleId" name="titleId" type="text" value={project.title.id} required />
+      </div>
+      <div class="field">
+        <label for="titleEn">Title EN</label>
+        <input id="titleEn" name="titleEn" type="text" value={project.title.en} required />
+      </div>
+      <div class="field">
+        <label for="summaryId">Summary ID</label>
+        <textarea id="summaryId" name="summaryId" rows="4" required>{project.summary.id}</textarea>
+      </div>
+      <div class="field">
+        <label for="summaryEn">Summary EN</label>
+        <textarea id="summaryEn" name="summaryEn" rows="4" required>{project.summary.en}</textarea>
+      </div>
+      <div class="field">
+        <label for="roleId">Role ID</label>
+        <input id="roleId" name="roleId" type="text" value={project.role.id} required />
+      </div>
+      <div class="field">
+        <label for="roleEn">Role EN</label>
+        <input id="roleEn" name="roleEn" type="text" value={project.role.en} required />
+      </div>
+      <div class="field">
+        <label for="clientId">Client ID</label>
+        <input id="clientId" name="clientId" type="text" value={project.client.id} required />
+      </div>
+      <div class="field">
+        <label for="clientEn">Client EN</label>
+        <input id="clientEn" name="clientEn" type="text" value={project.client.en} required />
+      </div>
+    </div>
+
+    <div class="admin-form__grid">
+      <div class="field">
+        <label for="challengeId">Challenge ID</label>
+        <textarea id="challengeId" name="challengeId" rows="6" placeholder="Masalah utama pertama&#10;Masalah utama kedua">{project.challenge.id.join("\n")}</textarea>
+        <p class="field-hint">Satu kalimat per baris.</p>
+      </div>
+      <div class="field">
+        <label for="challengeEn">Challenge EN</label>
+        <textarea id="challengeEn" name="challengeEn" rows="6" placeholder="First core problem&#10;Second core problem">{project.challenge.en.join("\n")}</textarea>
+        <p class="field-hint">One sentence per line.</p>
+      </div>
+      <div class="field">
+        <label for="solutionId">Solution ID</label>
+        <textarea id="solutionId" name="solutionId" rows="6" placeholder="Solusi utama pertama&#10;Solusi utama kedua">{project.solution.id.join("\n")}</textarea>
+        <p class="field-hint">Satu kalimat per baris.</p>
+      </div>
+      <div class="field">
+        <label for="solutionEn">Solution EN</label>
+        <textarea id="solutionEn" name="solutionEn" rows="6" placeholder="First solution point&#10;Second solution point">{project.solution.en.join("\n")}</textarea>
+        <p class="field-hint">One sentence per line.</p>
+      </div>
+    </div>
+
+    <AdminProjectStructuredFields
+      metrics={project.metrics}
+      insightsId={project.insights.id}
+      insightsEn={project.insights.en}
+      processId={project.process.id}
+      processEn={project.process.en}
+      galleryId={project.gallery.id}
+      galleryEn={project.gallery.en}
+      codeSample={project.codeSample ?? null}
+    />
+
+    <div class="admin-form__checks">
+      <label class="auth-checkbox">
+        <input checked={Boolean(project.featured)} name="featured" type="checkbox" />
+        <span>Featured</span>
+      </label>
+      <label class="auth-checkbox">
+        <input checked={Boolean(project.published)} name="published" type="checkbox" />
+        <span>Published</span>
+      </label>
+    </div>
+
+    <div class="admin-form__actions">
+      <a class="btn btn-secondary" href="/admin/projects">Back</a>
+      <button class="btn btn-primary" type="submit">Save Changes</button>
+    </div>
+  </form>
+
+  <form action={`/api/admin/projects/${project.id}`} class="admin-danger-form" method="POST">
+    <input type="hidden" name="action" value="delete" />
+    <button class="btn btn-secondary" type="submit">Delete Project</button>
+  </form>
+</AdminLayout>

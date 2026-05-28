@@ -1,0 +1,130 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import AdminProjectStructuredFields from "../../../components/AdminProjectStructuredFields.astro";
+
+const actionError = Astro.url.searchParams.get("error");
+---
+
+<AdminLayout title="Create Project">
+  <article class="admin-card" style="margin-bottom: 1.5rem;">
+    <div class="admin-page-header">
+      <div>
+        <p class="eyebrow">Create Project</p>
+        <h2 class="admin-card__title">Add a new bilingual project entry</h2>
+        <p class="body-copy">
+          Isi `Challenge` dan `Solution` satu poin per baris. Structured content lain bisa diisi lewat repeater agar tidak perlu menulis JSON manual.
+        </p>
+      </div>
+      <a class="btn btn-secondary" href="/admin/projects">Back to List</a>
+    </div>
+    {actionError ? <p class="body-copy">{actionError}</p> : null}
+  </article>
+
+  <form action="/api/admin/projects" class="admin-form" method="POST">
+    <div class="admin-card">
+      <div class="admin-form__grid">
+        <div class="field">
+          <label for="slug">Slug</label>
+          <input id="slug" name="slug" type="text" placeholder="brewing-better-ux" required />
+          <p class="field-hint">Gunakan huruf kecil dan tanda hubung. Contoh: `coffee-app-redesign`.</p>
+        </div>
+        <div class="field">
+          <label for="year">Year</label>
+          <input id="year" name="year" type="text" placeholder="2026" required />
+        </div>
+        <div class="field">
+          <label for="sortOrder">Sort Order</label>
+          <input id="sortOrder" name="sortOrder" type="number" value="0" />
+        </div>
+        <div class="field">
+          <label for="cover">Cover URL</label>
+          <input id="cover" name="cover" type="text" placeholder="https://example.com/project-cover.jpg" required />
+        </div>
+        <div class="field admin-form__wide">
+          <label for="coverAlt">Cover Alt</label>
+          <input id="coverAlt" name="coverAlt" type="text" placeholder="Mockup aplikasi pemesanan kopi di layar ponsel" required />
+        </div>
+        <div class="field">
+          <label for="categories">Categories</label>
+          <input id="categories" name="categories" type="text" placeholder="UX Research, UI Design" />
+        </div>
+        <div class="field">
+          <label for="stack">Stack</label>
+          <input id="stack" name="stack" type="text" placeholder="Astro, Laravel, MySQL" />
+        </div>
+        <div class="field">
+          <label for="titleId">Title ID</label>
+          <input id="titleId" name="titleId" type="text" placeholder="Brewing Better UX" required />
+        </div>
+        <div class="field">
+          <label for="titleEn">Title EN</label>
+          <input id="titleEn" name="titleEn" type="text" placeholder="Brewing Better UX" required />
+        </div>
+        <div class="field">
+          <label for="summaryId">Summary ID</label>
+          <textarea id="summaryId" name="summaryId" rows="4" placeholder="Redesign aplikasi pemesanan coffee shop untuk mengurangi friksi checkout di jam sibuk." required></textarea>
+        </div>
+        <div class="field">
+          <label for="summaryEn">Summary EN</label>
+          <textarea id="summaryEn" name="summaryEn" rows="4" placeholder="A coffee ordering app redesign focused on reducing checkout friction during peak hours." required></textarea>
+        </div>
+        <div class="field">
+          <label for="roleId">Role ID</label>
+          <input id="roleId" name="roleId" type="text" placeholder="Lead Product Designer" required />
+        </div>
+        <div class="field">
+          <label for="roleEn">Role EN</label>
+          <input id="roleEn" name="roleEn" type="text" placeholder="Lead Product Designer" required />
+        </div>
+        <div class="field">
+          <label for="clientId">Client ID</label>
+          <input id="clientId" name="clientId" type="text" placeholder="Boutique Coffee Subscription" required />
+        </div>
+        <div class="field">
+          <label for="clientEn">Client EN</label>
+          <input id="clientEn" name="clientEn" type="text" placeholder="Boutique Coffee Subscription" required />
+        </div>
+        <div class="field">
+          <label for="challengeId">Challenge ID</label>
+          <textarea id="challengeId" name="challengeId" rows="5" placeholder="Masalah utama pertama&#10;Masalah utama kedua"></textarea>
+          <p class="field-hint">Satu kalimat per baris.</p>
+        </div>
+        <div class="field">
+          <label for="challengeEn">Challenge EN</label>
+          <textarea id="challengeEn" name="challengeEn" rows="5" placeholder="First core problem&#10;Second core problem"></textarea>
+          <p class="field-hint">One sentence per line.</p>
+        </div>
+        <div class="field">
+          <label for="solutionId">Solution ID</label>
+          <textarea id="solutionId" name="solutionId" rows="5" placeholder="Solusi utama pertama&#10;Solusi utama kedua"></textarea>
+          <p class="field-hint">Satu kalimat per baris.</p>
+        </div>
+        <div class="field">
+          <label for="solutionEn">Solution EN</label>
+          <textarea id="solutionEn" name="solutionEn" rows="5" placeholder="First solution point&#10;Second solution point"></textarea>
+          <p class="field-hint">One sentence per line.</p>
+        </div>
+      </div>
+    </div>
+
+    <AdminProjectStructuredFields />
+
+    <div class="admin-card">
+      <div class="admin-form__checks">
+        <label class="auth-checkbox">
+          <input checked name="published" type="checkbox" />
+          <span>Published</span>
+        </label>
+        <label class="auth-checkbox">
+          <input name="featured" type="checkbox" />
+          <span>Featured</span>
+        </label>
+      </div>
+
+      <div class="admin-form__actions" style="margin-top: 1rem;">
+        <a class="btn btn-secondary" href="/admin/projects">Cancel</a>
+        <button class="btn btn-primary" type="submit">Create Project</button>
+      </div>
+    </div>
+  </form>
+</AdminLayout>

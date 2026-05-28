@@ -1,0 +1,57 @@
+---
+import SectionHeading from "../SectionHeading.astro";
+import ProjectCard from "../ProjectCard.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { getHomeCopyContent, getProjects, type Lang } from "../../data/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = await getHomeCopyContent(lang);
+const spotlight = (await getProjects(lang)).slice(0, 3);
+---
+
+<section class="hero-grid">
+  <div class="hero-copy">
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1>{copy.heroTitle}</h1>
+    <p>{copy.heroBody}</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href={getRelativeLocaleUrl(lang, "contact")}>{copy.primaryCta}</a>
+      <a class="btn btn-secondary" href={getRelativeLocaleUrl(lang, "projects")}>{copy.secondaryCta}</a>
+    </div>
+  </div>
+
+  <div class="hero-panel">
+    <img
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlCUkWC2tHIYVhsXvV13yTViBNihp5XF_ViQNcRK_5iqoTnZ66Ll1rVikCMfcKPi2wZuppk3RyBYDPy-MhylbppYHlSNHOYXflT5JIX54BjYhPzn9gRyBi6HLIX_dCbkVQhjYYkJbYhaJI0LhzF9dd5LsVxlj3dzIHxiDbjE87VBLm2Ae0KZaY9n4w9Vn4DENg_lxQEnI-EmYq42hn9OTgMlU0opEwwmehHt1jZYx16_pxKASLgwHQ7xG0nE7FWFRPmEKhuHdm_am1"
+      alt="Warm coffee and mobile wireframe on a rustic table."
+    />
+    <div class="hero-note">
+      <div class="status-pill">{copy.heroNoteTitle}</div>
+      <p class="contact-copy">{copy.heroNoteBody}</p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <SectionHeading eyebrow={copy.sectionEyebrow} title={copy.sectionTitle} body={copy.sectionBody} />
+  <div class="project-grid">
+    {spotlight.map((project) => <ProjectCard project={project} lang={lang} />)}
+  </div>
+</section>
+
+<section class="page-section">
+  <SectionHeading eyebrow={copy.strengthsEyebrow} title={copy.strengthsTitle} align="center" />
+  <div class="metrics-grid">
+    {copy.strengths.map((item) => (
+      <div class="metric-card">
+        <div class="metric-card__label">{item.label}</div>
+        <div class="metric-card__value">{item.value}</div>
+        <p class="body-copy">{item.body}</p>
+      </div>
+    ))}
+  </div>
+</section>

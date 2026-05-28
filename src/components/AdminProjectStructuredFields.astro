@@ -1,0 +1,497 @@
+---
+interface Props {
+  metrics?: unknown;
+  insightsId?: unknown;
+  insightsEn?: unknown;
+  processId?: unknown;
+  processEn?: unknown;
+  galleryId?: unknown;
+  galleryEn?: unknown;
+  codeSample?: unknown;
+}
+
+const {
+  metrics = [],
+  insightsId = [],
+  insightsEn = [],
+  processId = [],
+  processEn = [],
+  galleryId = [],
+  galleryEn = [],
+  codeSample = null,
+} = Astro.props;
+
+const toJson = (value: unknown) => JSON.stringify(value ?? null, null, 2);
+---
+
+<div class="admin-structured" data-structured-project-form>
+  <div class="admin-form__grid">
+    <article class="admin-structured__card">
+      <div class="admin-structured__header">
+        <div>
+          <h3>Metrics</h3>
+          <p>Simpan outcome penting dalam format bilingual label + value.</p>
+        </div>
+        <button class="btn btn-secondary" data-add-metric type="button">Add Metric</button>
+      </div>
+      <div class="admin-structured__list" data-metrics-list></div>
+      <textarea hidden name="metrics">{toJson(metrics)}</textarea>
+    </article>
+
+    <article class="admin-structured__card">
+      <div class="admin-structured__header">
+        <div>
+          <h3>Code Sample</h3>
+          <p>Opsional. Isi jika project punya cuplikan implementasi teknis.</p>
+        </div>
+      </div>
+      <div class="admin-structured__stack">
+        <div class="field">
+          <label for="codeSampleFile">File</label>
+          <input data-code-file id="codeSampleFile" placeholder="order-status.ts" type="text" />
+        </div>
+        <div class="field">
+          <label for="codeSampleLanguage">Language</label>
+          <input data-code-language id="codeSampleLanguage" placeholder="typescript" type="text" />
+        </div>
+        <div class="field admin-form__wide">
+          <label for="codeSampleCode">Code</label>
+          <textarea data-code-value id="codeSampleCode" placeholder="export const status = 'ready';" rows="10"></textarea>
+        </div>
+      </div>
+      <textarea hidden name="codeSample">{toJson(codeSample)}</textarea>
+    </article>
+  </div>
+
+  <div class="admin-form__grid">
+    <article class="admin-structured__card admin-form__wide">
+      <div class="admin-structured__header">
+        <div>
+          <h3>Insights</h3>
+          <p>Masukkan insight berpasangan untuk Indonesia dan English.</p>
+        </div>
+        <button class="btn btn-secondary" data-add-insight type="button">Add Insight</button>
+      </div>
+      <div class="admin-structured__list" data-insights-list></div>
+      <textarea hidden name="insightsId">{toJson(insightsId)}</textarea>
+      <textarea hidden name="insightsEn">{toJson(insightsEn)}</textarea>
+    </article>
+  </div>
+
+  <div class="admin-form__grid">
+    <article class="admin-structured__card admin-form__wide">
+      <div class="admin-structured__header">
+        <div>
+          <h3>Process</h3>
+          <p>Gunakan langkah proses yang jelas dan tetap sejajar antar bahasa.</p>
+        </div>
+        <button class="btn btn-secondary" data-add-process type="button">Add Step</button>
+      </div>
+      <div class="admin-structured__list" data-process-list></div>
+      <textarea hidden name="processId">{toJson(processId)}</textarea>
+      <textarea hidden name="processEn">{toJson(processEn)}</textarea>
+    </article>
+  </div>
+
+  <div class="admin-form__grid">
+    <article class="admin-structured__card admin-form__wide">
+      <div class="admin-structured__header">
+        <div>
+          <h3>Gallery</h3>
+          <p>Masukkan pasangan caption bilingual. URL gambar biasanya sama untuk kedua bahasa.</p>
+        </div>
+        <button class="btn btn-secondary" data-add-gallery type="button">Add Gallery Item</button>
+      </div>
+      <div class="admin-structured__list" data-gallery-list></div>
+      <textarea hidden name="galleryId">{toJson(galleryId)}</textarea>
+      <textarea hidden name="galleryEn">{toJson(galleryEn)}</textarea>
+    </article>
+  </div>
+</div>
+
+<script>
+  const parseJson = (value, fallback) => {
+    if (!value || !value.trim()) return fallback;
+
+    try {
+      return JSON.parse(value);
+    } catch {
+      return fallback;
+    }
+  };
+
+  const toText = (value) => (typeof value === "string" ? value : "");
+  const escapeHtml = (value) =>
+    toText(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+
+  const createMetricItem = (item = {}) => ({
+    id: toText(item?.label?.id),
+    en: toText(item?.label?.en),
+    value: toText(item?.value),
+  });
+
+  const createLocalizedItem = (idItem = {}, enItem = {}) => ({
+    idTitle: toText(idItem?.title),
+    idBody: toText(idItem?.body),
+    enTitle: toText(enItem?.title),
+    enBody: toText(enItem?.body),
+  });
+
+  const createGalleryItem = (idItem = {}, enItem = {}) => ({
+    image: toText(idItem?.image || enItem?.image),
+    idAlt: toText(idItem?.alt),
+    idCaption: toText(idItem?.caption),
+    enAlt: toText(enItem?.alt),
+    enCaption: toText(enItem?.caption),
+  });
+
+  const projectForms = document.querySelectorAll("[data-structured-project-form]");
+
+  for (const root of projectForms) {
+    const metricsField = root.querySelector('textarea[name="metrics"]');
+    const codeSampleField = root.querySelector('textarea[name="codeSample"]');
+    const insightsIdField = root.querySelector('textarea[name="insightsId"]');
+    const insightsEnField = root.querySelector('textarea[name="insightsEn"]');
+    const processIdField = root.querySelector('textarea[name="processId"]');
+    const processEnField = root.querySelector('textarea[name="processEn"]');
+    const galleryIdField = root.querySelector('textarea[name="galleryId"]');
+    const galleryEnField = root.querySelector('textarea[name="galleryEn"]');
+
+    const metrics = parseJson(metricsField?.value, []).map((item) => createMetricItem(item));
+    const insightsId = parseJson(insightsIdField?.value, []);
+    const insightsEn = parseJson(insightsEnField?.value, []);
+    const processId = parseJson(processIdField?.value, []);
+    const processEn = parseJson(processEnField?.value, []);
+    const galleryId = parseJson(galleryIdField?.value, []);
+    const galleryEn = parseJson(galleryEnField?.value, []);
+    const parsedCodeSample = parseJson(codeSampleField?.value, null);
+
+    const insightItems = Array.from({ length: Math.max(insightsId.length, insightsEn.length) }, (_, index) =>
+      createLocalizedItem(insightsId[index], insightsEn[index])
+    );
+    const processItems = Array.from({ length: Math.max(processId.length, processEn.length) }, (_, index) =>
+      createLocalizedItem(processId[index], processEn[index])
+    );
+    const galleryItems = Array.from({ length: Math.max(galleryId.length, galleryEn.length) }, (_, index) =>
+      createGalleryItem(galleryId[index], galleryEn[index])
+    );
+
+    const sync = () => {
+      if (metricsField) {
+        metricsField.value = JSON.stringify(
+          metrics
+            .map((item) => ({
+              label: { id: item.id.trim(), en: item.en.trim() },
+              value: item.value.trim(),
+            }))
+            .filter((item) => item.label.id || item.label.en || item.value),
+          null,
+          2
+        );
+      }
+
+      if (insightsIdField && insightsEnField) {
+        insightsIdField.value = JSON.stringify(
+          insightItems
+            .map((item) => ({
+              title: item.idTitle.trim(),
+              body: item.idBody.trim(),
+            }))
+            .filter((item) => item.title || item.body),
+          null,
+          2
+        );
+        insightsEnField.value = JSON.stringify(
+          insightItems
+            .map((item) => ({
+              title: item.enTitle.trim(),
+              body: item.enBody.trim(),
+            }))
+            .filter((item) => item.title || item.body),
+          null,
+          2
+        );
+      }
+
+      if (processIdField && processEnField) {
+        processIdField.value = JSON.stringify(
+          processItems
+            .map((item) => ({
+              title: item.idTitle.trim(),
+              body: item.idBody.trim(),
+            }))
+            .filter((item) => item.title || item.body),
+          null,
+          2
+        );
+        processEnField.value = JSON.stringify(
+          processItems
+            .map((item) => ({
+              title: item.enTitle.trim(),
+              body: item.enBody.trim(),
+            }))
+            .filter((item) => item.title || item.body),
+          null,
+          2
+        );
+      }
+
+      if (galleryIdField && galleryEnField) {
+        galleryIdField.value = JSON.stringify(
+          galleryItems
+            .map((item) => ({
+              image: item.image.trim(),
+              alt: item.idAlt.trim(),
+              caption: item.idCaption.trim(),
+            }))
+            .filter((item) => item.image || item.alt || item.caption),
+          null,
+          2
+        );
+        galleryEnField.value = JSON.stringify(
+          galleryItems
+            .map((item) => ({
+              image: item.image.trim(),
+              alt: item.enAlt.trim(),
+              caption: item.enCaption.trim(),
+            }))
+            .filter((item) => item.image || item.alt || item.caption),
+          null,
+          2
+        );
+      }
+
+      if (codeSampleField) {
+        const file = root.querySelector("[data-code-file]")?.value?.trim() || "";
+        const language = root.querySelector("[data-code-language]")?.value?.trim() || "";
+        const code = root.querySelector("[data-code-value]")?.value?.trim() || "";
+
+        codeSampleField.value = file || language || code
+          ? JSON.stringify({ file, language, code }, null, 2)
+          : "null";
+      }
+    };
+
+    const renderMetrics = () => {
+      const list = root.querySelector("[data-metrics-list]");
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      if (!metrics.length) {
+        metrics.push(createMetricItem());
+      }
+
+      metrics.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "admin-repeater";
+        row.innerHTML = `
+          <div class="admin-repeater__grid admin-repeater__grid--triple">
+            <div class="field">
+              <label>Label ID</label>
+              <input data-key="id" placeholder="Checkout completion" type="text" value="${escapeHtml(item.id)}" />
+            </div>
+            <div class="field">
+              <label>Label EN</label>
+              <input data-key="en" placeholder="Checkout completion" type="text" value="${escapeHtml(item.en)}" />
+            </div>
+            <div class="field">
+              <label>Value</label>
+              <input data-key="value" placeholder="+24%" type="text" value="${escapeHtml(item.value)}" />
+            </div>
+          </div>
+          <div class="admin-repeater__actions">
+            <button class="btn btn-secondary" data-remove type="button">Remove</button>
+          </div>
+        `;
+
+        row.querySelectorAll("input").forEach((input) => {
+          input.addEventListener("input", () => {
+            item[input.dataset.key] = input.value;
+            sync();
+          });
+        });
+
+        row.querySelector("[data-remove]")?.addEventListener("click", () => {
+          metrics.splice(index, 1);
+          renderMetrics();
+          sync();
+        });
+
+        list.appendChild(row);
+      });
+    };
+
+    const renderLocalizedList = (items, listSelector, addLabel) => {
+      const list = root.querySelector(listSelector);
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      if (!items.length) {
+        items.push(createLocalizedItem());
+      }
+
+      items.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "admin-repeater admin-repeater--paired";
+        row.innerHTML = `
+          <div class="admin-repeater__pair">
+            <div class="admin-repeater__lang">
+              <p class="admin-repeater__lang-title">Indonesia</p>
+              <div class="field">
+                <label>Title ID</label>
+                <input data-key="idTitle" placeholder="${addLabel} title ID" type="text" value="${escapeHtml(item.idTitle)}" />
+              </div>
+              <div class="field">
+                <label>Body ID</label>
+                <textarea data-key="idBody" placeholder="${addLabel} body ID" rows="4">${escapeHtml(item.idBody)}</textarea>
+              </div>
+            </div>
+            <div class="admin-repeater__lang">
+              <p class="admin-repeater__lang-title">English</p>
+              <div class="field">
+                <label>Title EN</label>
+                <input data-key="enTitle" placeholder="${addLabel} title EN" type="text" value="${escapeHtml(item.enTitle)}" />
+              </div>
+              <div class="field">
+                <label>Body EN</label>
+                <textarea data-key="enBody" placeholder="${addLabel} body EN" rows="4">${escapeHtml(item.enBody)}</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="admin-repeater__actions">
+            <button class="btn btn-secondary" data-remove type="button">Remove</button>
+          </div>
+        `;
+
+        row.querySelectorAll("input, textarea").forEach((input) => {
+          input.addEventListener("input", () => {
+            item[input.dataset.key] = input.value;
+            sync();
+          });
+        });
+
+        row.querySelector("[data-remove]")?.addEventListener("click", () => {
+          items.splice(index, 1);
+          renderLocalizedList(items, listSelector, addLabel);
+          sync();
+        });
+
+        list.appendChild(row);
+      });
+    };
+
+    const renderGallery = () => {
+      const list = root.querySelector("[data-gallery-list]");
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      if (!galleryItems.length) {
+        galleryItems.push(createGalleryItem());
+      }
+
+      galleryItems.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "admin-repeater admin-repeater--paired";
+        row.innerHTML = `
+          <div class="field admin-form__wide">
+            <label>Image URL</label>
+            <input data-key="image" placeholder="https://example.com/project-cover.jpg" type="text" value="${escapeHtml(item.image)}" />
+          </div>
+          <div class="admin-repeater__pair">
+            <div class="admin-repeater__lang">
+              <p class="admin-repeater__lang-title">Indonesia</p>
+              <div class="field">
+                <label>Alt ID</label>
+                <input data-key="idAlt" placeholder="Alt text Indonesia" type="text" value="${escapeHtml(item.idAlt)}" />
+              </div>
+              <div class="field">
+                <label>Caption ID</label>
+                <textarea data-key="idCaption" placeholder="Caption Indonesia" rows="3">${escapeHtml(item.idCaption)}</textarea>
+              </div>
+            </div>
+            <div class="admin-repeater__lang">
+              <p class="admin-repeater__lang-title">English</p>
+              <div class="field">
+                <label>Alt EN</label>
+                <input data-key="enAlt" placeholder="English alt text" type="text" value="${escapeHtml(item.enAlt)}" />
+              </div>
+              <div class="field">
+                <label>Caption EN</label>
+                <textarea data-key="enCaption" placeholder="English caption" rows="3">${escapeHtml(item.enCaption)}</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="admin-repeater__actions">
+            <button class="btn btn-secondary" data-remove type="button">Remove</button>
+          </div>
+        `;
+
+        row.querySelectorAll("input, textarea").forEach((input) => {
+          input.addEventListener("input", () => {
+            item[input.dataset.key] = input.value;
+            sync();
+          });
+        });
+
+        row.querySelector("[data-remove]")?.addEventListener("click", () => {
+          galleryItems.splice(index, 1);
+          renderGallery();
+          sync();
+        });
+
+        list.appendChild(row);
+      });
+    };
+
+    root.querySelector("[data-add-metric]")?.addEventListener("click", () => {
+      metrics.push(createMetricItem());
+      renderMetrics();
+      sync();
+    });
+
+    root.querySelector("[data-add-insight]")?.addEventListener("click", () => {
+      insightItems.push(createLocalizedItem());
+      renderLocalizedList(insightItems, "[data-insights-list]", "Insight");
+      sync();
+    });
+
+    root.querySelector("[data-add-process]")?.addEventListener("click", () => {
+      processItems.push(createLocalizedItem());
+      renderLocalizedList(processItems, "[data-process-list]", "Process");
+      sync();
+    });
+
+    root.querySelector("[data-add-gallery]")?.addEventListener("click", () => {
+      galleryItems.push(createGalleryItem());
+      renderGallery();
+      sync();
+    });
+
+    const codeFile = root.querySelector("[data-code-file]");
+    const codeLanguage = root.querySelector("[data-code-language]");
+    const codeValue = root.querySelector("[data-code-value]");
+
+    if (parsedCodeSample && typeof parsedCodeSample === "object") {
+      if (codeFile) codeFile.value = toText(parsedCodeSample.file);
+      if (codeLanguage) codeLanguage.value = toText(parsedCodeSample.language);
+      if (codeValue) codeValue.value = toText(parsedCodeSample.code);
+    }
+
+    [codeFile, codeLanguage, codeValue].forEach((input) => {
+      input?.addEventListener("input", sync);
+    });
+
+    renderMetrics();
+    renderLocalizedList(insightItems, "[data-insights-list]", "Insight");
+    renderLocalizedList(processItems, "[data-process-list]", "Process");
+    renderGallery();
+    sync();
+  }
+</script>

@@ -1,0 +1,74 @@
+---
+import { getContactCopyContent, getSiteCopyContent, type Lang } from "../../data/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = await getContactCopyContent(lang);
+const site = await getSiteCopyContent(lang);
+---
+
+<section class="contact-grid">
+  <div class="contact-card">
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1 class="editorial-title" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-top: 0.6rem;">
+      {copy.heading}
+    </h1>
+    <p class="contact-copy" style="margin-top: 1rem;">{copy.body}</p>
+
+    <div class="contact-list" style="margin-top: 1.75rem;">
+      <div class="status-pill">{site.availability}</div>
+      <a class="contact-line" href={`mailto:${site.email}`}>
+        <span class="contact-line__icon material-symbols-outlined">mail</span>
+        <span>{site.email}</span>
+      </a>
+      <a class="contact-line" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
+        <span class="contact-line__icon material-symbols-outlined">link</span>
+        <span>{copy.linkedIn}</span>
+      </a>
+      <a class="contact-line" href="https://github.com/" target="_blank" rel="noreferrer">
+        <span class="contact-line__icon material-symbols-outlined">code</span>
+        <span>{copy.github}</span>
+      </a>
+      <div class="contact-line">
+        <span class="contact-line__icon material-symbols-outlined">location_on</span>
+        <span>{site.location} · {site.timezone}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <form class="contact-form">
+      <div class="field-grid">
+        <div class="field">
+          <label for="name">{copy.name}</label>
+          <input id="name" name="name" type="text" placeholder="Jane Doe" />
+        </div>
+        <div class="field">
+          <label for="email">{copy.email}</label>
+          <input id="email" name="email" type="email" placeholder="jane@example.com" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="subject">{copy.subject}</label>
+        <select id="subject" name="subject">
+          <option selected>{copy.select}</option>
+          {copy.options.map((option) => <option>{option}</option>)}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="message">{copy.message}</label>
+        <textarea id="message" name="message" rows="6" placeholder={copy.messagePlaceholder}></textarea>
+      </div>
+
+      <button class="btn btn-primary" type="submit">
+        <span>{copy.button}</span>
+        <span class="material-symbols-outlined">send</span>
+      </button>
+    </form>
+  </div>
+</section>

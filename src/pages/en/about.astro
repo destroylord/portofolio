@@ -1,0 +1,11 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AboutPage from "../../components/pages/AboutPage.astro";
+import { getAboutCopyContent } from "../../data/i18n";
+
+const copy = await getAboutCopyContent("en");
+---
+
+<Layout title={copy.title} activePath="/about" routePath="about" lang="en">
+  <AboutPage lang="en" />
+</Layout>

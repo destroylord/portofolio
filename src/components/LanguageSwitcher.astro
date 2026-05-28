@@ -1,0 +1,20 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Lang } from "../data/i18n";
+
+interface Props {
+  lang: Lang;
+  routePath?: string;
+}
+
+const { lang, routePath = "" } = Astro.props;
+---
+
+<div class="language-switcher" aria-label="Language switcher">
+  <a class:list={["language-switcher__link", lang === "id" && "is-active"]} href={getRelativeLocaleUrl("id", routePath)}>
+    ID
+  </a>
+  <a class:list={["language-switcher__link", lang === "en" && "is-active"]} href={getRelativeLocaleUrl("en", routePath)}>
+    EN
+  </a>
+</div>

@@ -1,0 +1,27 @@
+---
+import SectionHeading from "../SectionHeading.astro";
+import ProjectCard from "../ProjectCard.astro";
+import { getProjects, getProjectsCopy, type Lang } from "../../data/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = getProjectsCopy(lang);
+const projects = await getProjects(lang);
+const categories = Array.from(new Set(projects.flatMap((project) => project.categories)));
+---
+
+<section class="page-section" style="padding-top: 4rem;">
+  <SectionHeading eyebrow={copy.eyebrow} title={copy.heading} body={copy.body} />
+
+  <div class="pill-row" style="margin-bottom: 2rem;">
+    <span class="tag">{copy.all}</span>
+    {categories.map((category) => <span class="meta-pill">{category}</span>)}
+  </div>
+
+  <div class="project-grid">
+    {projects.map((project) => <ProjectCard project={project} compact lang={lang} />)}
+  </div>
+</section>

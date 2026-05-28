@@ -1,0 +1,61 @@
+---
+import SectionHeading from "../SectionHeading.astro";
+import { getAboutCopyContent, getSkillsContent, type Lang } from "../../data/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const copy = await getAboutCopyContent(lang);
+const skills = await getSkillsContent(lang);
+---
+
+<section class="page-section" style="padding-top: 4rem;">
+  <div class="about-intro">
+    <p class="eyebrow">{copy.eyebrow}</p>
+    <h1 class="display-title" style="font-size: clamp(2.8rem, 6vw, 4.25rem);">{copy.heroTitle}</h1>
+    <div class="about-portrait">
+      <img
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPWPjWbo2dBYXjJA0hp0orcrClkZ8ZvDvMx8R20CssHrgq6ePQkls2ZmrTVfx7msbLU3NprL_cFbvGtVxwv6uo4rNHLS1u44WnH3wsvxrLFOMK68qQ4Sa2XAxTIQ-uHeZ3fIT1VtP9T3NYgYnptFSeIoQOSRYxQ7AwXI5PxpQk2a-1M7RqBnKt0xA-ttj9vujPrYdjlt1BPdIv_hNlo85IjGTzmmnuwQDk-4u8h7nxAWxID0EXcE-CymK07XH5ogI0xk_qrJYzTcz8"
+        alt="Portrait of the designer in a warm coffee shop setting."
+      />
+    </div>
+    <p class="lead">{copy.heroBody}</p>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="about-story">
+    <SectionHeading eyebrow={copy.storyEyebrow} title={copy.storyTitle} align="center" />
+    <div class="content-card rich-text about-story__card">
+      {copy.story.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="quote-card about-quote">
+    <blockquote>
+      <p>{copy.quote}</p>
+      <footer class="metric-card__label">{copy.quoteBy}</footer>
+    </blockquote>
+  </div>
+</section>
+
+<section class="page-section">
+  <SectionHeading eyebrow={copy.skillsEyebrow} title={copy.skillsTitle} align="center" />
+  <div class="skills-grid skills-grid--about">
+    {
+      skills.map((skill) => (
+        <article class="skill-card">
+          <h3 class="project-card__title" style="font-size: 1.45rem; margin-top: 0;">{skill.title}</h3>
+          <p class="body-copy">{skill.body}</p>
+          <div class="pill-row" style="margin-top: 1rem;">
+            {skill.tags.map((tag) => <span class="tag">{tag}</span>)}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { getSiteCopyContent, type Lang } from "../data/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const site = await getSiteCopyContent(lang);
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <div class="site-footer__brand">{site.title}</div>
+      <p class="site-footer__copy">{site.footerCopy}</p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Social links">
+      {
+        site.socials.map((item) => (
+          <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={getRelativeLocaleUrl(lang, "contact")}>{lang === "id" ? "Kontak" : "Contact"}</a>
+    </nav>
+  </div>
+</footer>

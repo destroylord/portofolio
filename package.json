@@ -1,0 +1,36 @@
+{
+  "name": "portofolio",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "auth:migrate": "node --env-file=.env scripts/better-auth-migrate.mjs",
+    "auth:seed-admin": "node --env-file=.env scripts/seed-admin.mjs",
+    "auth:check-db": "node --env-file=.env scripts/check-db-connection.mjs",
+    "db:seed-projects": "node --env-file=.env scripts/seed-projects.mjs",
+    "db:seed-content": "node --env-file=.env scripts/seed-content.mjs",
+    "db:generate": "drizzle-kit generate --config=drizzle.config.mjs",
+    "db:push": "drizzle-kit push --config=drizzle.config.mjs",
+    "db:studio": "drizzle-kit studio --config=drizzle.config.mjs"
+  },
+  "dependencies": {
+    "@astrojs/node": "^10.1.1",
+    "@better-auth/drizzle-adapter": "^1.6.11",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.7",
+    "better-auth": "^1.6.11",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "mysql2": "^3.22.3",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@better-auth/cli": "^1.4.21"
+  }
+}
