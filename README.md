@@ -17,9 +17,16 @@ Semua command dijalankan dari root project:
 - `npm run build`
 - `npm run preview`
 - `npm run db:push`
+- `npm run db:reset-app`
+- `npm run db:reset-all`
 - `npm run db:seed-content`
 - `npm run db:seed-projects`
 - `npm run auth:seed-admin`
+
+Catatan reset database:
+
+- `npm run db:reset-app` hanya menghapus tabel milik aplikasi
+- `npm run db:reset-all` menghapus semua tabel dalam database aktif
 
 ## Environment
 
