@@ -13,7 +13,7 @@ Artinya aplikasi harus dideploy ke environment yang bisa menjalankan **Node.js s
 
 Target deploy yang cocok:
 
-- VPS Ubuntu + Nginx
+- VPS Ubuntu + Docker Compose
 - Railway
 - Render
 - Fly.io
@@ -29,7 +29,7 @@ Target deploy yang tidak cocok:
 
 Sebelum deploy, siapkan:
 
-1. Server Node.js
+1. Server Node.js atau Docker Engine + Docker Compose
 2. Database MySQL production
 3. Domain atau subdomain production
 4. HTTPS untuk domain production
@@ -75,7 +75,146 @@ Urutan paling aman:
 6. Seed akun admin
 7. Build project
 8. Jalankan server Node
-9. Pasang reverse proxy seperti Nginx
+9. Publikasikan app lewat web server atau reverse proxy
+
+## Deploy Dengan Docker Compose
+
+Project ini sekarang sudah disiapkan untuk skenario full Docker:
+
+- `nginx`
+- `app`
+- `mysql`
+
+Catatan untuk local testing:
+
+- Jika sebelumnya container `mysql` pernah gagal start karena konfigurasi lama, hapus volume MySQL lama sebelum test ulang supaya database bisa diinisialisasi ulang dengan bersih.
+
+File yang dipakai:
+
+- [Dockerfile](/mnt/c/laragon/www/portfolio/Dockerfile:1)
+- [docker-compose.yml](/mnt/c/laragon/www/portfolio/docker-compose.yml:1)
+- [docker-compose.external.yml](/mnt/c/laragon/www/portfolio/docker-compose.external.yml:1)
+- [.env.docker.example](/mnt/c/laragon/www/portfolio/.env.docker.example:1)
+- [deploy/nginx/default.conf](/mnt/c/laragon/www/portfolio/deploy/nginx/default.conf:1)
+- [scripts/deploy-docker.sh](/mnt/c/laragon/www/portfolio/scripts/deploy-docker.sh:1)
+
+### 1. Siapkan environment
+
+```bash
+cp .env.docker.example .env.production
+```
+
+Lalu edit `.env.production` dan ganti minimal:
+
+- `BETTER_AUTH_SECRET`
+- `BETTER_AUTH_URL`
+- `SITE_URL`
+- `DATABASE_NAME`
+- `DATABASE_USER`
+- `DATABASE_PASSWORD`
+- `MYSQL_ROOT_PASSWORD`
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+
+Penting:
+
+- `DATABASE_HOST` untuk setup Compose ini harus tetap `mysql`
+- `BETTER_AUTH_URL` dan `SITE_URL` harus memakai domain production final
+
+### 2. Build dan jalankan container
+
+```bash
+docker compose --env-file .env.production build
+docker compose --env-file .env.production up -d
+```
+
+Setelah `up -d`, website publik akan tersedia dari container `nginx` pada port `80` VPS.
+
+### 3. Inisialisasi database pertama kali
+
+Jalankan ini setelah container `app`, `nginx`, dan `mysql` sudah hidup:
+
+```bash
+docker compose --env-file .env.production exec app npm run db:push
+docker compose --env-file .env.production exec app npm run db:seed-content
+docker compose --env-file .env.production exec app npm run auth:seed-admin
+```
+
+Opsional sample project:
+
+```bash
+docker compose --env-file .env.production exec app npm run db:seed-projects
+```
+
+### 4. Update deploy berikutnya
+
+Kalau ada perubahan code:
+
+```bash
+./scripts/deploy-docker.sh update
+```
+
+Kalau ada perubahan schema database:
+
+```bash
+docker compose --env-file .env.production exec app npm run db:push
+```
+
+### 5. Log dan restart
+
+```bash
+docker compose --env-file .env.production logs -f nginx
+docker compose --env-file .env.production logs -f app
+docker compose --env-file .env.production restart nginx
+docker compose --env-file .env.production restart app
+```
+
+### 6. Script helper deploy
+
+Supaya lebih ringkas, kamu bisa pakai:
+
+```bash
+chmod +x ./scripts/deploy-docker.sh
+./scripts/deploy-docker.sh init
+```
+
+Mode yang tersedia:
+
+- `./scripts/deploy-docker.sh init`
+- `./scripts/deploy-docker.sh update`
+- `./scripts/deploy-docker.sh logs`
+- `./scripts/deploy-docker.sh restart`
+- `./scripts/deploy-docker.sh shell`
+
+Kalau ingin pakai compose file lain, misalnya database eksternal:
+
+```bash
+COMPOSE_FILE=docker-compose.external.yml ./scripts/deploy-docker.sh update
+```
+
+## Deploy Dengan MySQL Eksternal
+
+Kalau database MySQL production kamu sudah ada di server lain atau managed service, pakai:
+
+- [docker-compose.external.yml](/mnt/c/laragon/www/portfolio/docker-compose.external.yml:1)
+
+Pastikan `.env.production` diisi sesuai host database external:
+
+- `DATABASE_HOST`
+- `DATABASE_PORT`
+- `DATABASE_NAME`
+- `DATABASE_USER`
+- `DATABASE_PASSWORD`
+
+Jalankannya:
+
+```bash
+docker compose --env-file .env.production -f docker-compose.external.yml build
+docker compose --env-file .env.production -f docker-compose.external.yml up -d
+docker compose --env-file .env.production -f docker-compose.external.yml exec app npm run db:push
+docker compose --env-file .env.production -f docker-compose.external.yml exec app npm run db:seed-content
+docker compose --env-file .env.production -f docker-compose.external.yml exec app npm run auth:seed-admin
+```
 
 ## Command Deploy
 
@@ -127,10 +266,9 @@ Untuk deploy update berikutnya:
 Stack yang saya sarankan:
 
 - Ubuntu 24.04
-- Node.js 22
-- MySQL 8
+- Docker Engine
+- Docker Compose plugin
 - Nginx
-- PM2
 
 ### Install dependency dasar
 
@@ -139,39 +277,29 @@ sudo apt update
 sudo apt install -y nginx mysql-client
 ```
 
-Install Node.js 22 sesuai preferensi kamu, misalnya pakai `nvm`.
+Install Docker sesuai panduan resmi Docker untuk Ubuntu, lalu jalankan app via `docker compose`.
 
-### Jalankan dengan PM2
+## Nginx Di Dalam Docker
 
-```bash
-npm install
-npm run build
-pm2 start ./dist/server/entry.mjs --name warm-story
-pm2 save
-```
+Container `nginx` sudah ikut dijalankan oleh Compose dan otomatis proxy ke service `app`.
 
-## Contoh Nginx Reverse Proxy
+Template config yang dipakai:
 
-Asumsi aplikasi jalan di port `4321`.
+- [deploy/nginx/default.conf](/mnt/c/laragon/www/portfolio/deploy/nginx/default.conf:1)
 
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com www.your-domain.com;
+Port publik default:
 
-    location / {
-        proxy_pass http://127.0.0.1:4321;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
+- `80` untuk HTTP
 
-Setelah itu aktifkan HTTPS, misalnya dengan Certbot.
+Jadi untuk mode full Docker ini kamu tidak perlu install `nginx` manual di VPS.
+
+Kalau nanti ingin HTTPS full otomatis di dalam Docker juga, langkah berikutnya paling enak biasanya pakai:
+
+- `nginx + certbot` container
+- atau pindah ke `Caddy`
+- atau `Traefik`
+
+Saat ini setup yang saya siapkan fokus ke alur paling sederhana: `docker compose up -d` langsung hidup semuanya lewat HTTP.
 
 ## Rekomendasi Railway
 
