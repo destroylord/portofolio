@@ -24,7 +24,7 @@ case "$MODE" in
     compose build
     compose up -d
     compose exec app npm run db:push
-    compose exec app npm run db:seed-content
+    # compose exec app npm run db:seed-content
     compose exec app npm run auth:seed-admin
     ;;
   update)
