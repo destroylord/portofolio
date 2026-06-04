@@ -6,7 +6,7 @@ MODE="${1:-}"
 COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.yml}"
 
 if [ -z "$MODE" ]; then
-  echo "Usage: ./scripts/deploy-docker.sh <init|update|logs|restart|shell>"
+  echo "Usage: ./scripts/deploy-docker.sh <init|update|logs|restart|shell|clean-init>"
   exit 1
 fi
 
@@ -25,11 +25,24 @@ case "$MODE" in
     compose up -d
     compose exec app npm run db:push
     # compose exec app npm run db:seed-content
-    compose exec app npm run auth:seed-admin
+    BETTER_AUTH_DISABLE_SIGN_UP=false compose exec app npm run auth:seed-admin
     ;;
   update)
     compose build
     compose up -d
+    ;;
+  clean-init)
+    echo "Stopping containers..."
+    compose down -v
+    echo "Removing images..."
+    docker rmi portfolio-app || true
+    echo "Building fresh..."
+    compose build
+    compose up -d
+    compose exec app npm run db:push
+    # compose exec app npm run db:seed-content
+    BETTER_AUTH_DISABLE_SIGN_UP=false compose exec app npm run auth:seed-admin
+    echo "Clean init complete!"
     ;;
   logs)
     compose logs -f app
@@ -42,7 +55,7 @@ case "$MODE" in
     ;;
   *)
     echo "Mode tidak dikenal: $MODE"
-    echo "Gunakan salah satu: init, update, logs, restart, shell"
+    echo "Gunakan salah satu: init, update, logs, restart, shell, clean-init"
     exit 1
     ;;
 esac
